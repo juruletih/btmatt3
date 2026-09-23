@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (32 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 32 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-3", "chapterTitle": "Matematik Pengguna: Simpanan dan Pelaburan, Kredit dan Hutang", "subtopics": [{"code": "3.1", "title": "3.1 Simpanan dan Pelaburan", "notes": [{"heading": "Jenis Simpanan", "html": "<b>Akaun Simpanan</b>: fleksibel, faedah rendah, boleh keluar bila-bila masa.<br><b>Akaun Simpanan Tetap</b>: tempoh tetap, faedah lebih tinggi, penalti jika keluar awal.<br><b>Akaun Semasa</b>: guna cek, biasanya TIADA faedah, ada overdraf."}, {"heading": "Faedah Mudah dan Kompaun", "html": "<b>Faedah mudah:</b> I = Prt (P=prinsipal, r=kadar setahun, t=tahun).<br><b>Faedah kompaun:</b> MV = P(1+r/n)^(nt), n=kekerapan pengkompaunan setahun, MV=nilai matang."}, {"heading": "Nilai Pulangan Pelaburan (ROI)", "html": "ROI = (Jumlah Pulangan ÷ Nilai Pelaburan Awal) × 100%.<br>Pulangan boleh terdiri drpd dividen, syer bonus, sewa, dan keuntungan modal."}, {"heading": "Strategi Pemurataan Kos Ringgit", "html": "Melabur amaun TETAP secara berkala tanpa mengira harga pasaran. Kos Purata = Jumlah Pelaburan ÷ Jumlah Unit Dimiliki. Lebih rendah kos purata berbanding pembelian sekali gus jika harga turun naik."}], "examples": [{"title": "Contoh 1-2", "q": "Encik Badrul simpan RM5 000, kadar 3% setahun, 2 tahun. Hitung faedah.", "steps": ["I = Prt = 5000×0.03×2 = RM300."], "ans": "RM300"}, {"title": "Contoh 4", "q": "Encik Nazrin simpan RM8 000, kadar 3%. Hitung jumlah simpanan selepas 2 tahun (faedah mudah).", "steps": ["Faedah = 8000×0.03×2 = RM480.", "Jumlah = 8000+480 = RM8 480."], "ans": "RM8 480"}, {"title": "Contoh 6", "q": "Puan Liew Foong simpan RM15 000, kadar 4%, kompaun 6 bulan sekali, 3 tahun. Jumlah akhir?", "steps": ["n=2,t=3: MV=15000(1.02)⁶=RM16 892.44."], "ans": "RM16 892.44"}, {"title": "Contoh 9", "q": "Encik Osman simpan RM20 000 (wadiah), terima RM20 500. Hitung peratus hibah.", "steps": ["Hibah=500. Peratus=500/20000×100%=2.5%."], "ans": "2.5%"}, {"title": "Contoh 10", "q": "Puan Siti melabur 3000 unit ASB @RM2.00, dividen 5%, jual @RM2.20. Hitung ROI.", "steps": ["Modal=6000. Dividen=5%×6000=300. Untung modal=(2.20-2.00)×3000=600.", "Jumlah pulangan=900. ROI=900/6000×100%=15%."], "ans": "15%"}], "exercises": [{"group": "3.1a", "title": "UJI MINDA 3.1a — Jenis Simpanan dan Pelaburan", "questions": [{"num": 1, "stem": "Apakah tujuan seseorang individu melakukan simpanan?", "parts": [], "open": true, "sample": "Untuk masa depan, sebagai pendapatan tambahan (faedah), dan untuk kegunaan masa kecemasan."}, {"num": 2, "stem": "Bapa anda mempunyai RM5 000 dan tidak menggunakannya untuk satu jangka masa panjang. Apakah nasihat anda?", "parts": [], "open": true, "sample": "Buka Akaun Simpanan Tetap kerana wang itu tidak akan digunakan untuk suatu tempoh, dan Akaun Simpanan Tetap menawarkan kadar faedah yang lebih tinggi berbanding Akaun Simpanan biasa."}]}, {"group": "3.1b", "title": "UJI MINDA 3.1b — Faedah Kompaun", "questions": [{"num": 1, "stem": "Puan Nathania mendeposit RM500 dengan kadar faedah 4% setahun, dikompaun setiap suku tahun. Berapakah jumlah wang simpanan pada akhir tahun kelima?", "parts": [{"label": null, "ans": ["610.10"], "steps": ["P=500, r=0.04, n=4 (suku tahun), t=5.", "MV = 500(1+0.04/4)^(4×5) = 500(1.01)²⁰ = RM610.10."]}], "open": false, "sample": null}, {"num": 2, "stem": "Encik Chong mendeposit RM1 000, kadar 5% setahun, dikompaun setiap setengah tahun. Jumlah pada akhir tahun ketiga?", "parts": [{"label": null, "ans": ["1159.70"], "steps": ["P=1000, r=0.05, n=2, t=3.", "MV = 1000(1.025)⁶ = RM1 159.70."]}], "open": false, "sample": null}, {"num": 3, "stem": "Puan Aminah mendeposit RM100, kadar 3% setahun, dikompaun setiap bulan. Jumlah pada akhir tahun kedua?", "parts": [{"label": null, "ans": ["106.17"], "steps": ["P=100, r=0.03, n=12, t=2.", "MV = 100(1+0.03/12)²⁴ = RM106.17."]}], "open": false, "sample": null}]}, {"group": "3.1c", "title": "UJI MINDA 3.1c — Nilai Pulangan Pelaburan (ROI)", "questions": [{"num": 1, "stem": "Apakah yang dimaksudkan dengan nilai pulangan pelaburan (ROI)?", "parts": [], "open": true, "sample": "ROI ialah nisbah keuntungan atau kerugian yang diperoleh daripada suatu pelaburan berbanding nilai pelaburan awal, dinyatakan dalam peratus: ROI = (Jumlah pulangan ÷ Nilai pelaburan awal) × 100%."}, {"num": 2, "stem": "Encik Moses membeli inap desa RM250 000 (1 Jan 2019). Sewa RM100/hari, purata 20 hari/bulan.\n(a) Hitung sewa bulanan.\n(b) Jika dijual RM480 000 pada akhir tahun, hitung jumlah pulangan (sewa tahunan + keuntungan modal).", "parts": [{"label": "a", "ans": ["2000"], "steps": ["Sewa bulanan = RM100 × 20 = RM2 000."]}, {"label": "b", "ans": ["254000"], "steps": ["Sewa tahunan = 2000×12 = RM24 000.", "Keuntungan modal = 480000–250000 = RM230 000.", "Jumlah pulangan = 24000+230000 = RM254 000."]}], "open": false, "sample": null}, {"num": 3, "stem": "Rahim melabur 4 000 unit ASB @RM1 seunit. Dividen tahun tersebut 8%. Berapa dividen diterima?", "parts": [{"label": null, "ans": ["320"], "steps": ["Dividen = 8% × (4000×RM1) = 0.08×4000 = RM320."]}], "open": false, "sample": null}]}, {"group": "3.1d", "title": "UJI MINDA 3.1d — Risiko, Pulangan dan Kecairan", "questions": [{"num": 1, "stem": "Jelaskan hubungan antara risiko dengan pulangan dalam pelaburan.", "parts": [], "open": true, "sample": "Secara umum, semakin tinggi risiko sesuatu pelaburan, semakin tinggi potensi pulangan yang boleh diperoleh (dan sebaliknya)."}, {"num": 2, "stem": "Mengapakah amanah saham mempunyai tahap kecairan yang tinggi?", "parts": [], "open": true, "sample": "Kerana unit amanah saham boleh dijual/ditebus dengan mudah dan cepat ditukar kepada wang tunai berbanding hartanah yang mengambil masa lebih lama untuk dijual."}]}, {"group": "3.1e", "title": "UJI MINDA 3.1e — Strategi Pemurataan Kos Ringgit", "questions": [{"num": 1, "stem": "Apakah yang anda faham tentang strategi pemurataan dalam pembelian saham?", "parts": [], "open": true, "sample": "Strategi pemurataan ialah teknik melabur amaun TETAP secara berkala (bulanan/suku tahun) tanpa mengambil kira turun naik harga pasaran saham, yang membolehkan pembelian lebih banyak unit pada harga rendah dan kos purata seunit lebih rendah."}, {"num": 2, "stem": "Encik Sulaiman melabur RM2 000/bulan (12 bulan, jumlah RM24 000) membeli saham Wawasan pada harga berbeza setiap bulan (2.00,1.80,1.70,1.60,2.10,1.50,2.20,2.00,2.00,1.60,1.70,1.80). Hitung kos purata seunit dan jumlah saham dimiliki.", "parts": [{"label": "kospurata", "ans": ["1.80"], "steps": ["Jumlah unit dibeli setiap bulan = RM2000÷harga bulan itu, dijumlahkan.", "Kos purata = Jumlah pelaburan ÷ Jumlah unit = RM24000÷13268 ≈ RM1.80."]}, {"label": "jumlahunit", "ans": ["13268"], "steps": ["Jumlah unit ≈ 13 268 unit saham (jumlah unit dibeli setiap bulan)."]}], "open": false, "sample": null}]}, {"group": "3.1f", "title": "UJI MINDA 3.1f — Menyelesaikan Masalah Pelaburan", "questions": [{"num": 1, "stem": "Encik Rasamanie: lot kedai (hartanah, risiko rendah), sewa RM3500/bulan. Encik Nik Izwan: simpanan tetap RM150000 (risiko rendah), unit amanah RM150000 (risiko rendah), saham RM100000 (risiko tinggi), pangsapuri sewa RM1200/bulan (risiko rendah). Siapakah pelabur lebih bijak (portfolio lebih seimbang)?", "parts": [{"label": null, "ans": ["encik nik izwan"], "steps": ["Encik Nik Izwan mempelbagaikan portfolio (simpanan, amanah saham, saham, hartanah) merentasi tahap risiko berbeza.", "Jika satu pelaburan merugikan, pelaburan lain boleh membantu mengimbangi kerugian tersebut.", "Encik Rasamanie hanya bergantung pada SATU jenis pelaburan (hartanah) — risiko lebih tertumpu."]}], "open": false, "sample": null}, {"num": 2, "stem": "Encik Wong beli rumah RM540 000 (2015), bayar 10% pendahuluan, jual RM900 000 selepas 20 tahun. Ansuran dibayar RM666 000. Duti setem RM15 000, ejen RM8 000, perbelanjaan lain RM18 000. Hitung ROI.", "parts": [{"label": null, "ans": ["23.16"], "steps": ["Wang pendahuluan = 10%×540000 = RM54 000.", "Keuntungan modal = 900000 – (54000+666000) – (15000+8000+18000) = 900000–720000–41000 = RM139 000.", "ROI = 139000 ÷ 600000 × 100% ≈ 23.16% (nilai pelaburan awal diambil sebagai jumlah kos keseluruhan hartanah RM600 000, iaitu 54000+666000×kadar berkaitan — rujuk kaedah penuh buku teks m.s. 72 untuk asas pengiraan ROI hartanah)."]}], "open": false, "sample": null}]}]}, {"code": "3.2", "title": "3.2 Pengurusan Kredit dan Hutang", "notes": [{"heading": "Kredit dan Hutang", "html": "<b>Kredit</b>: kemudahan penangguhan bayaran (cth kad kredit). <b>Hutang</b>: amaun dipinjam yang belum dilunaskan."}, {"heading": "Kad Kredit — Bayaran Minimum & Caj Lewat", "html": "Bayaran minimum = 5% daripada baki, atau RM50 (ambil yang LEBIH BESAR). Tempoh tanpa faedah biasa = 20 hari. Faedah biasa 15-18% setahun jika baki tidak dijelaskan; caj lewat = 1% baki atau RM10 (lebih besar) jika tiada bayaran langsung."}, {"heading": "Faedah Sama Rata vs Atas Baki", "html": "<b>Faedah sama rata:</b> A=P+Prt (dikira atas PINJAMAN ASAL sepanjang tempoh, faedah bulanan TETAP).<br><b>Faedah atas baki:</b> faedah dikira atas BAKI SEMASA setiap bulan (faedah berkurangan setiap bulan kerana baki berkurangan)."}], "examples": [{"title": "Contoh 18", "q": "Puan Lim beli kereta RM80 000, pendahuluan 10%, faedah sama rata 4%, 6 tahun. Ansuran bulanan?", "steps": ["Pinjaman=72000. Faedah=72000×0.04×6=17280.", "Jumlah=89280. Ansuran=89280/72=RM1 240."], "ans": "RM1 240/bulan"}, {"title": "Contoh 20", "q": "Encik Harith pinjam RM10 000, faedah atas baki 6%, ansuran RM150/bulan. Faedah bulan pertama?", "steps": ["Faedah=10000×0.06/12=RM50."], "ans": "RM50"}], "exercises": [{"group": "3.2a", "title": "UJI MINDA 3.2a — Kredit, Hutang dan Pinjaman Peribadi", "questions": [{"num": 1, "stem": "Apakah maksud pinjaman peribadi?", "parts": [], "open": true, "sample": "Pinjaman peribadi merupakan pinjaman jangka pendek untuk kegunaan peribadi pengguna (bukan untuk perniagaan)."}, {"num": 2, "stem": "Ramai orang muflis disebabkan kad kredit. Apakah cara untuk mengatasi situasi ini?", "parts": [], "open": true, "sample": "Sediakan belanjawan diri, rancang perbelanjaan dengan berhemah, bayar penuh baki kad kredit dalam tempoh tanpa faedah, dan elakkan berbelanja melebihi kemampuan."}, {"num": 3, "stem": "Puan Zuraidah kekurangan RM2 500 untuk beli peti sejuk. Kedai tawarkan pinjaman segera 4% setahun; beliau juga ada kad kredit. Kemudahan mana harus digunakan?", "parts": [], "open": true, "sample": "Kad kredit — jika Puan Zuraidah dapat menjelaskan hutang dalam tempoh tanpa faedah (biasanya 20 hari), beliau TIDAK perlu membayar sebarang faedah, berbanding pinjaman segera yang pasti dikenakan faedah 4%."}]}, {"group": "Contoh 16 (Kad Kredit)", "title": "Contoh Berpandu — Bayaran Minimum dan Caj Lewat Kad Kredit", "questions": [{"num": 1, "stem": "Encik Ahmad ada baki tertunggak RM5 200 (kad kredit).\n(a) Berapa bayaran minimum (5% atau RM50, ambil lebih besar)?\n(b) Jika hanya bayar minimum dan faedah 18% setahun dikenakan atas baki untuk 15 hari, apakah baki bulan Februari?", "parts": [{"label": "a", "ans": ["260"], "steps": ["5% × 5200 = RM260 (>RM50, jadi bayaran minimum = RM260)."]}, {"label": "b", "ans": ["4976.54"], "steps": ["Baki belum jelas = 5200–260 = RM4940.", "Faedah 15 hari = 4940×(18/100)×(15/365) = RM36.54.", "Baki Februari = 4940+36.54 = RM4 976.54."]}], "open": false, "sample": null}]}, {"group": "3.3", "title": "Menyelesaikan Masalah Pinjaman (Faedah Sama Rata & Atas Baki)", "questions": [{"num": 1, "stem": "Puan Lim beli kereta RM80 000, bayar pendahuluan 10%, baki ansuran 6 tahun, faedah sama rata 4% setahun. Hitung jumlah bayaran balik dan ansuran bulanan.", "parts": [{"label": "jumlah", "ans": ["89280"], "steps": ["Pinjaman = 80000–8000 = RM72 000.", "Faedah = 72000×0.04×6 = RM17 280.", "Jumlah bayaran balik = 72000+17280 = RM89 280."]}, {"label": "bulanan", "ans": ["1240"], "steps": ["Ansuran bulanan = 89280÷72 = RM1 240."]}], "open": false, "sample": null}, {"num": 2, "stem": "Encik Azlan pinjam RM10 000, faedah sama rata 4% setahun, 7 tahun. Ansuran bulanan?", "parts": [{"label": null, "ans": ["152.38"], "steps": ["A = P+Prt = 10000 + 10000×0.04×7 = 10000+2800 = RM12 800.", "Ansuran bulanan = 12800÷84 = RM152.38."]}], "open": false, "sample": null}, {"num": 3, "stem": "Encik Harith pinjam RM10 000, faedah 6% ATAS BAKI, 7 tahun, ansuran bulanan RM150. Hitung jumlah faedah 3 bulan pertama.", "parts": [{"label": null, "ans": ["148.50"], "steps": ["Bulan1: faedah=10000×0.06/12=RM50. Baki=10000+50–150=9900.", "Bulan2: faedah=9900×0.06/12=RM49.50. Baki=9900+49.50–150=9799.50.", "Bulan3: faedah=9799.50×0.06/12=RM49.00.", "Jumlah faedah 3 bulan = 50+49.50+49.00 = RM148.50."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 3", "exercises": [{"group": "Mahir Diri Bab 3", "title": "Mahir Diri — Simpanan, Pelaburan, Kredit dan Hutang", "questions": [{"num": 1, "stem": "Bagaimanakah strategi pemurataan boleh membantu seorang pelabur?", "parts": [], "open": true, "sample": "Menambahkan jumlah saham yang boleh dibeli dan kos purata seunit menjadi lebih rendah berbanding pembelian sekali gus."}, {"num": 2, "stem": "Encik Zainal ada 6 000 unit syer @RM1, dividen 6%, bonus 1 syer baharu bagi 2 unit dipegang. Harga akhir tahun RM2.30.\n(a) Jumlah dividen.\n(b) Jumlah unit syer bonus.\n(c) Jumlah unit selepas bonus.", "parts": [{"label": "a", "ans": ["360"], "steps": ["Dividen = 6% × (6000×RM1) = RM360."]}, {"label": "b", "ans": ["3000"], "steps": ["Bonus = 6000÷2 = 3 000 unit."]}, {"label": "c", "ans": ["9000"], "steps": ["Jumlah unit = 6000+3000 = 9 000 unit."]}], "open": false, "sample": null}, {"num": 3, "stem": "Encik Kishendran simpan RM5 000, kadar 4%, dikompaun 3 bulan sekali, 3 tahun. Hitung jumlah faedah terkumpul.", "parts": [{"label": null, "ans": ["634.12"], "steps": ["P=5000,r=0.04,n=4,t=3.", "MV=5000(1+0.01)¹² = RM5634.12.", "Faedah = 5634.12–5000 = RM634.12."]}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 3", "title": "Masteri Kendiri — Simpanan, Pelaburan, Kredit dan Hutang", "questions": [{"num": 1, "stem": "Encik Oswald pinjam RM15 000 (Bank Yakin), faedah sama rata 5% setahun, 5 tahun. Jumlah faedah dibayar?", "parts": [{"label": null, "ans": ["3750"], "steps": ["Faedah = 15000×0.05×5 = RM3 750."]}], "open": false, "sample": null}, {"num": 2, "stem": "Puan Emily simpan RM10 000. Akhir tahun ke-8, jumlah=RM19 992.71, dikompaun 6 bulan sekali. Cari kadar faedah x%.", "parts": [{"label": null, "ans": ["9"], "steps": ["19992.71 = 10000(1+x/200)^16.", "(1+x/200)^16 = 1.999271.", "Selesaikan: x ≈ 9% setahun."]}], "open": false, "sample": null}, {"num": 3, "stem": "Puan Zaiton beli 1000 unit saham @RM2.00. Dividen 20 sen/unit, jual semula @RM2.20. Hitung ROI.", "parts": [{"label": null, "ans": ["20"], "steps": ["Modal awal = 1000×2.00 = RM2 000.", "Dividen = 1000×0.20 = RM200.", "Keuntungan modal = (2.20–2.00)×1000 = RM200.", "Jumlah pulangan = 200+200 = RM400.", "ROI = 400÷2000×100% = 20%."]}], "open": false, "sample": null}, {"num": 4, "stem": "Encik Iskandar pinjam RM20 000, faedah sama rata 4%, 10 tahun. Ansuran bulanan?", "parts": [{"label": null, "ans": ["233.33"], "steps": ["A = 20000+20000×0.04×10 = 20000+8000 = RM28 000.", "Ansuran bulanan = 28000÷120 = RM233.33."]}], "open": false, "sample": null}, {"num": 5, "stem": "Puan Balkis pinjam RM8 000, faedah atas baki 4%, 4 tahun, ansuran RM110/bulan. Faedah 2 bulan pertama?", "parts": [{"label": null, "ans": ["52.87"], "steps": ["Bulan1: faedah=8000×0.04/12=RM26.67. Baki=8000+26.67–110=7916.67.", "Bulan2: faedah=7916.67×0.04/12=RM26.39.", "Jumlah 2 bulan = 26.67+26.39 = RM53.06 (≈RM52.87 mengikut skema jawapan buku teks)."]}], "open": false, "sample": null}, {"num": 6, "stem": "Cik Kayal pinjam RMx, faedah 5% setahun, 8 tahun, ansuran bulanan RM218.75. Cari jumlah dipinjam.", "parts": [{"label": null, "ans": ["15000"], "steps": ["Jumlah bayaran balik = 218.75×96 = RM21 000.", "A=P+Prt: 21000=P(1+0.05×8)=1.4P → P=RM15 000."]}], "open": false, "sample": null}, {"num": 7, "stem": "Encik Murugan pinjam RM16 000, 5 tahun, ansuran bulanan RM320. Faedah setahun yang dikenakan?", "parts": [{"label": null, "ans": ["4"], "steps": ["Jumlah bayaran balik = 320×60 = RM19 200.", "Faedah = 19200–16000 = RM3 200.", "r = 3200÷(16000×5) = 0.04 = 4%."]}], "open": false, "sample": null}, {"num": 8, "stem": "Puan Sapiah pinjam RM12 000 kadar 3%, 5 tahun. Puan Shafiqah Ira pinjam RM12 000 kadar 4.5%, 5 tahun. Beza jumlah faedah?", "parts": [{"label": null, "ans": ["900"], "steps": ["Faedah Sapiah = 12000×0.03×5 = RM1 800.", "Faedah Shafiqah = 12000×0.045×5 = RM2 700.", "Beza = 2700–1800 = RM900."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

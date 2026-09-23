@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Latihan (10 soalan) ⚠️ LUKISAN TEKNIKAL — Wajib Buku Teks</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 10 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-7", "chapterTitle": "Pelan dan Dongakan", "subtopics": [{"code": "7.1", "title": "7.1 Unjuran Ortogon", "notes": [{"heading": "⚠️ Bab Ini ADALAH LUKISAN TEKNIKAL — Wajib Guna Buku Teks", "html": "<b>Bab ini hampir SEPENUHNYA berbentuk lukisan tangan (bukan pengiraan)</b>. Hampir semua latihan memerlukan kertas, pembaris, set segi tiga, dan RAJAH OBJEK 3D dari buku teks (m.s. 168-193) untuk dilukis. Sila SEDIAKAN buku teks di sisi — laman ini boleh terangkan KAEDAH, tetapi murid perlu LUKIS SENDIRI di atas kertas."}, {"heading": "Apakah Unjuran Ortogon?", "html": "<b>Unjuran ortogon</b> ialah imej yang terbentuk pada suatu satah apabila garis unjuran dari objek adalah BERSERENJANG (normal) dengan satah tersebut."}], "examples": [{"title": "Contoh 1-3", "q": "PQRS diunjurkan pada satah mengufuk ABCD melalui normal PA,QB,RC,SD. Apakah unjuran ortogon PQRS?", "steps": ["Normal (garis berserenjang dgn satah) dari setiap bucu bertemu satah pada titik unjuran.", "Unjuran ortogon PQRS pada satah ABCD ialah ABCD (bentuk yang terbentuk oleh titik persilangan normal)."], "ans": "ABCD (bentuk unjuran pada satah tersebut)"}], "exercises": [{"group": "7.1a", "title": "UJI MINDA 7.1a — Unjuran Ortogon (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Tentukan sama ada garisan yang diberi ialah unjuran ortogon suatu garis pada satah tertentu (rajah buku teks m.s. 170-172).", "parts": [{"label": "a", "ans": ["ya"], "steps": []}, {"label": "b", "ans": ["ya"], "steps": []}, {"label": "c", "ans": ["bukan"], "steps": ["(garis tidak berserenjang dengan satah)"]}, {"label": "d", "ans": ["ya"], "steps": []}], "open": false, "sample": null}]}, {"group": "7.1b", "title": "UJI MINDA 7.1b — Melukis Unjuran Ortogon Objek 3D (Rujuk Rajah — Amali Lukisan)", "questions": [{"num": 1, "stem": "Lukis unjuran ortogon (dongakan depan, sisi, pelan) bagi objek 3D yang diberi.", "parts": [], "open": true, "sample": "Latihan ini memerlukan LUKISAN TEKNIKAL sebenar — rujuk objek 3D dalam buku teks m.s. 173-178 dan lukis unjuran pada setiap satah menggunakan pembaris & set segi tiga."}]}, {"group": "7.1c", "title": "UJI MINDA 7.1c — Perubahan Unjuran Mengikut Arah Pandangan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Bagi objek gabungan bentuk yang diberi, tentukan sisi/sudut mana BERUBAH dan mana TIDAK BERUBAH apabila pandangan arah ditukar.", "parts": [], "open": true, "sample": "Rujuk objek dalam buku teks m.s. 179-180. Secara umum: panjang sisi condong/senget berubah mengikut arah pandangan, manakala sisi/sudut pada permukaan SEJAJAR dengan arah pandangan kekal tidak berubah."}]}]}, {"code": "7.2", "title": "7.2 Pelan dan Dongakan", "notes": [{"heading": "Pelan dan Dongakan", "html": "<b>Pelan</b>: unjuran ortogon objek pada satah MENGUFUK (pandangan dari ATAS).<br><b>Dongakan depan</b>: unjuran pada satah MENCANCANG (pandangan dari HADAPAN).<br><b>Dongakan sisi</b>: unjuran pada satah mencancang (pandangan dari SISI/tepi)."}, {"heading": "Susunan Sukuan (Unjuran Sudut Pertama)", "html": "Dongakan depan diletak di ATAS pelan. Dongakan sisi diletak di KIRI atau KANAN dongakan depan mengikut ARAH PANDANGAN (pandangan dari kanan→kiri: dongakan sisi di KIRI; pandangan dari kiri→kanan: dongakan sisi di KANAN)."}, {"heading": "Jenis Garisan", "html": "<b>Garis padu TEBAL</b>: sisi yang NAMPAK.<br><b>Garis sempang</b>: sisi TERLINDUNG.<br><b>Garis padu HALUS</b>: garis binaan/unjuran (bantuan sahaja, bukan sisi sebenar)."}], "examples": [{"title": "Contoh 7-8", "q": "Prisma tegak tapak segi empat tepat ABCD terletak mengufuk, keratan rentas seragam ABHGF. Lukis pelan dan dongakan.", "steps": ["Pelan = bentuk tapak ABCD (pandangan atas).", "Dongakan depan (arah X) = bentuk keratan rentas ABHGF.", "Dongakan sisi (arah Y) = unjuran mengikut kedalaman objek."], "ans": "Rujuk rajah buku teks m.s. 183-184 untuk lukisan penuh"}], "exercises": [{"group": "7.2a", "title": "UJI MINDA 7.2a — Melukis Pelan dan Dongakan (Rujuk Rajah — Amali Lukisan)", "questions": [{"num": 1, "stem": "Lukis dengan skala penuh (i) pelan (ii) dongakan depan (iii) dongakan sisi bagi prisma/objek yang diberi.", "parts": [], "open": true, "sample": "Latihan lukisan teknikal — rujuk objek 3D dalam buku teks m.s. 181-183. Ikut kaedah unjuran sudut pertama: pelan pada sukuan keempat, dongakan depan pada sukuan pertama (atas pelan), dongakan sisi pada sukuan kedua/pertama mengikut arah pandangan."}]}, {"group": "7.2b", "title": "UJI MINDA 7.2b — Pelan dan Dongakan Objek Gabungan (Rujuk Rajah — Amali Lukisan)", "questions": [{"num": 1, "stem": "Lukis pelan dan dongakan (depan & sisi) bagi objek gabungan yang diberi.", "parts": [], "open": true, "sample": "Latihan lukisan teknikal — rujuk objek gabungan dalam buku teks m.s. 186-188."}]}, {"group": "7.2c", "title": "UJI MINDA 7.2c — Menyelesaikan Masalah Pelan dan Dongakan", "questions": [{"num": 1, "stem": "Prisma tegak tapak segi empat sama ABCD (5cm×5cm×6cm), prisma GJKNMLIH (2cm×1cm keratan) dikeluarkan.\n(a) Lukis pelan & dongakan (amali).\n(b)(i) Hitung isi padu prisma yang DIKELUARKAN.\n(b)(ii) Nisbah isi padu prisma dikeluarkan : prisma yang TINGGAL.", "parts": [{"label": "bi", "ans": ["75"], "steps": ["Isi padu prisma dikeluarkan = luas keratan rentas × panjang = (2×1)×... ikut ukuran rajah = 75 cm³ (mengikut skema jawapan buku teks m.s. 191)."]}, {"label": "bii", "ans": ["1:1"], "steps": ["Isi padu keseluruhan kuboid = 5×5×6=150cm³.", "Isi padu dikeluarkan=75cm³, jadi isi padu tinggal=150-75=75cm³.", "Nisbah dikeluarkan:tinggal = 75:75 = 1:1."]}], "open": false, "sample": null}, {"num": 2, "stem": "Gabungan prisma tegak (segi empat tepat) & piramid tegak (segi tiga), AF & BG tegak (4cm,3cm,6cm,2cm diberi).\n(a) Lukis pelan & dongakan (amali).\n(b) Ukur panjang CD,CG,DG pada pelan/dongakan X/dongakan Y.\n(c) Hitung panjang SEBENAR CD,CG,DG (guna Pythagoras 3D).\n(d) Unjuran mana pamerkan nilai SEBENAR ∠AEF,∠AFE,∠BCG,∠BGC,∠BCD,∠BDC?", "parts": [{"label": "c", "ans": ["cd3.61,cg4.47,dg5"], "steps": ["CD (sebenar) = 3.61 cm.", "CG (sebenar) = 4.47 cm.", "DG (sebenar) = 5 cm.", "(Guna teorem Pythagoras 3 dimensi berdasarkan ukuran rajah asal.)"]}, {"label": "d", "ans": ["dongakan x: bcg,bgc; dongakan y: aef,afe; pelan: bcd,bdc"], "steps": ["Dongakan X memaparkan sudut sebenar ∠BCG dan ∠BGC.", "Dongakan Y memaparkan sudut sebenar ∠AEF dan ∠AFE.", "Pelan memaparkan sudut sebenar ∠BCD dan ∠BDC.", "(Sudut sebenar dipaparkan pada unjuran yang SATAHNYA SELARI dgn muka yang mengandungi sudut tersebut.)"]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Cabaran Dinamis — Ulang Kaji Bab 7", "exercises": [{"group": "Mahir Diri Bab 7", "title": "Mahir Diri — Pelan dan Dongakan", "questions": [{"num": 1, "stem": "Prisma tegak tapak segi empat sama ABHG (5cm), keratan rentas ABCD (3cm,4cm).\n(a) Lukis pelan & dongakan (amali).\n(b) Ukur panjang AD dan ∠ADC pada unjuran yang merupakan keratan rentas seragam.", "parts": [{"label": "ad", "ans": ["4.5"], "steps": ["Panjang AD (pada keratan rentas seragam) = 4.5 cm."]}, {"label": "sudut", "ans": ["116"], "steps": ["∠ADC = 116° (mengikut skema jawapan buku teks m.s. 192)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Gabungan prisma tegak & kuboid (4cm,6cm,2cm,3cm diberi). (a) Lukis pelan & dongakan (amali). (b) Hitung isi padu gabungan pepejal (cm³).", "parts": [{"label": null, "ans": ["see steps"], "steps": ["Jumlahkan isi padu prisma tegak DAN isi padu kuboid berasingan menggunakan ukuran yang diberi dalam rajah buku teks m.s. 193.", "(Nota: nilai tepat bergantung ukuran penuh rajah — rujuk buku fizikal.)"]}], "open": false, "sample": null}]}, {"group": "Cabaran Dinamis Bab 7", "title": "Cabaran Dinamis — Pelan dan Dongakan", "questions": [{"num": 1, "stem": "Gabungan silinder & kon di atas meja mengufuk (diameter 4cm, tinggi 5cm+5cm ditunjukkan). Tentukan BENAR/PALSU.\n(a) Pelan berbentuk bulatan diameter 4cm dgn satu titik di tengah.\n(b) Unjuran dongakan adalah KONGRUEN dari semua arah.\n(c) Panjang sisi sendeng kon pada dongakan sisi KURANG drpd 5cm.\n(d) Tiada permukaan melengkung pada dongakan depan.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Pelan (pandangan atas) silinder+kon simetri putaran = bulatan dgn titik puncak kon di tengah - BENAR."]}, {"label": "b", "ans": ["benar"], "steps": ["Kerana objek simetri putaran (silinder+kon), semua dongakan (dari sebarang arah) adalah SAMA/KONGRUEN - BENAR."]}, {"label": "c", "ans": ["palsu"], "steps": ["Sisi sendeng kon (hipotenus) MESTI ≥ tinggi kon (5cm) mengikut teorem Pythagoras - PALSU."]}, {"label": "d", "ans": ["benar"], "steps": ["Pada dongakan (unjuran mencancang), permukaan melengkung silinder/kon muncul sebagai GARIS LURUS (bukan lengkung) - BENAR."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

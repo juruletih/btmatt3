@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (17 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 17 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-2", "chapterTitle": "Bentuk Piawai", "subtopics": [{"code": "2.1", "title": "2.1 Angka Bererti", "notes": [{"heading": "Apakah Angka Bererti?", "html": "<b>Angka bererti</b> ialah digit-digit dalam nombor yang menunjukkan tahap ketepatan (kejituan) ukuran itu.<br>• Semua digit BUKAN SIFAR ialah angka bererti.<br>• Sifar ANTARA digit bukan sifar ialah angka bererti.<br>• Sifar di HUJUNG INTEGER: angka bererti mengikut tahap kejituan dikehendaki (biasanya TIDAK dikira melainkan dinyatakan).<br>• Sifar di HUJUNG PERPULUHAN ialah angka bererti.<br>• Sifar SEBELUM digit bukan sifar pertama BUKAN angka bererti."}, {"heading": "Membundarkan kepada Angka Bererti", "html": "Sama seperti membundar ke nilai tempat: kenal pasti digit ke-n (bilangan a.b. dikehendaki), lihat digit SETERUSNYA — jika ≥5 tambah 1, jika <5 kekal, gantikan digit selepasnya dengan sifar (integer) atau gugurkan (perpuluhan)."}], "examples": [{"title": "Contoh 1", "q": "Tentukan bilangan angka bererti: (a) 2763 (b) 5008 (c) 15000", "steps": ["(a) semua digit bukan sifar = 4 a.b.", "(b) sifar antara digit = 4 a.b.", "(c) bergantung tahap kejituan: 2,3,4 atau 5 a.b."], "ans": "(a) 4 a.b. (b) 4 a.b. (c) bergantung kejituan"}, {"title": "Contoh 2", "q": "Bundarkan 63479 kepada 2 angka bererti.", "steps": ["Digit ke-3 (4) < 5, kekal.", "Gantikan digit selepasnya dengan sifar."], "ans": "63 000 (2 a.b.)"}, {"title": "Contoh 4", "q": "Bundarkan 0.008025 kepada 3 angka bererti.", "steps": ["Digit ke-4 (5) = 5, tambah 1 kepada digit ke-3 (2→3).", "Gugurkan digit selepas."], "ans": "0.00803 (3 a.b.)"}], "exercises": [{"group": "2.1a", "title": "UJI MINDA 2.1a — Bilangan Angka Bererti", "questions": [{"num": 1, "stem": "Nyatakan bilangan angka bererti bagi setiap nombor berikut.\n(a) 2 600\n(b) 30 004\n(c) 4 000 600\n(d) 0.5003\n(e) 0.080\n(f) 9.0070\n(g) 0.002000\n(h) 30.0002", "parts": [{"label": "a", "ans": ["2"], "steps": ["Sifar di hujung integer (tiada perpuluhan) TIDAK dikira melainkan dinyatakan → 2 a.b."]}, {"label": "b", "ans": ["5"], "steps": ["Sifar antara digit bukan sifar (3...4) semuanya angka bererti → 5 a.b."]}, {"label": "c", "ans": ["5"], "steps": ["Dari digit pertama (4) hingga digit bukan sifar terakhir (6): 4,0,0,0,6 → 5 a.b."]}, {"label": "d", "ans": ["4"], "steps": ["5,0,0,3 → 4 a.b."]}, {"label": "e", "ans": ["2"], "steps": ["Sifar sebelum digit bukan sifar pertama (0.0) BUKAN angka bererti; 8 dan sifar selepasnya angka bererti → 2 a.b."]}, {"label": "f", "ans": ["5"], "steps": ["9,0,0,7,0 → semua angka bererti (sifar antara & sifar akhir perpuluhan) → 5 a.b."]}, {"label": "g", "ans": ["4"], "steps": ["Sifar sebelum 2 bukan angka bererti; 2,0,0,0 (sifar akhir perpuluhan) angka bererti → 4 a.b."]}, {"label": "h", "ans": ["6"], "steps": ["3,0,0,0,0,2 → 6 a.b."]}], "open": false, "sample": null}]}, {"group": "2.1b", "title": "UJI MINDA 2.1b — Membundarkan kepada Angka Bererti", "questions": [{"num": 1, "stem": "Bundarkan setiap nombor berikut betul kepada 3, 2, dan 1 angka bererti.\n(a) 47 193\n(b) 5 261\n(c) 305.72\n(d) 20.68", "parts": [{"label": "a3", "ans": ["47200"], "steps": ["3 a.b.: digit ke-4 (9) ≥5, bundarkan → 47 200."]}, {"label": "a2", "ans": ["47000"], "steps": ["2 a.b. → 47 000."]}, {"label": "a1", "ans": ["50000"], "steps": ["1 a.b. → 50 000."]}, {"label": "b3", "ans": ["5260"], "steps": ["3 a.b. → 5 260."]}, {"label": "b2", "ans": ["5300"], "steps": ["2 a.b. → 5 300."]}, {"label": "b1", "ans": ["5000"], "steps": ["1 a.b. → 5 000."]}, {"label": "c3", "ans": ["306"], "steps": ["3 a.b. → 306."]}, {"label": "c2", "ans": ["310"], "steps": ["2 a.b. → 310."]}, {"label": "c1", "ans": ["300"], "steps": ["1 a.b. → 300."]}, {"label": "d3", "ans": ["20.7"], "steps": ["3 a.b. → 20.7."]}, {"label": "d2", "ans": ["21"], "steps": ["2 a.b. → 21."]}, {"label": "d1", "ans": ["20"], "steps": ["1 a.b. → 20."]}], "open": false, "sample": null}, {"num": 2, "stem": "Hitung setiap operasi berikut. Nyatakan jawapan betul kepada angka bererti dalam kurungan.\n(a) 2.57×4.5+0.45 [4]\n(b) 8.59÷2.1–1.26 [3]\n(c) 14.23–2.6×1.2 [3]\n(d) 15.74+20.3÷2.5 [2]", "parts": [{"label": "a", "ans": ["12.02"], "steps": ["2.57×4.5=11.565. +0.45=12.015. Bundar 4 a.b. → 12.02."]}, {"label": "b", "ans": ["2.83"], "steps": ["8.59÷2.1=4.0905. –1.26=2.8305. Bundar 3 a.b. → 2.83."]}, {"label": "c", "ans": ["11.1"], "steps": ["2.6×1.2=3.12. 14.23–3.12=11.11. Bundar 3 a.b. → 11.1."]}, {"label": "d", "ans": ["24"], "steps": ["20.3÷2.5=8.12. 15.74+8.12=23.86. Bundar 2 a.b. → 24."]}], "open": false, "sample": null}]}]}, {"code": "2.2", "title": "2.2 Bentuk Piawai", "notes": [{"heading": "Definisi Bentuk Piawai", "html": "Bentuk piawai: <b>A × 10ⁿ</b>, dengan 1 ≤ A < 10 dan n integer.<br>Nombor >1 → indeks POSITIF. Nombor <1 → indeks NEGATIF."}, {"heading": "Operasi Tambah/Tolak", "html": "Samakan INDEKS dahulu (tukar salah satu supaya indeks sama), kemudian tambah/tolak bahagian A sahaja."}, {"heading": "Operasi Darab/Bahagi", "html": "(A×10ᵐ)×(B×10ⁿ) = (A×B)×10ᵐ⁺ⁿ.  (A×10ᵐ)÷(B×10ⁿ) = (A÷B)×10ᵐ⁻ⁿ."}], "examples": [{"title": "Contoh 5", "q": "Tuliskan 280 dalam bentuk piawai.", "steps": ["280 = 2.80×100 = 2.8×10²."], "ans": "2.8×10²"}, {"title": "Contoh 6", "q": "Tuliskan 0.00325 dalam bentuk piawai.", "steps": ["0.00325 = 3.25×1/1000 = 3.25×10⁻³."], "ans": "3.25×10⁻³"}, {"title": "Contoh 7-8", "q": "Tuliskan (a) 4.17×10⁵ (b) 8.063×10⁻⁵ sebagai nombor tunggal.", "steps": ["(a) 4.17×100000=417000.", "(b) 8.063×0.00001=0.00008063."], "ans": "(a) 417 000 (b) 0.00008063"}, {"title": "Contoh 11", "q": "Hitung 2.73×10³+5.92×10³.", "steps": ["Indeks sama, tambah A: (2.73+5.92)×10³=8.65×10³."], "ans": "8.65×10³"}, {"title": "Contoh 12", "q": "Hitung 7.02×10⁴+2.17×10⁵.", "steps": ["Tukar 2.17×10⁵=21.7×10⁴.", "(7.02+21.7)×10⁴=28.72×10⁴=2.872×10⁵."], "ans": "2.872×10⁵"}, {"title": "Contoh 13", "q": "Hitung 3×10⁵×4.9×10².", "steps": ["(3×4.9)×10⁵⁺²=14.7×10⁷=1.47×10⁸."], "ans": "1.47×10⁸"}, {"title": "Contoh 14", "q": "1 rim=800 helai, ketebalan 1 helai=9.4×10⁻³cm. Jumlah ketebalan n rim=225.6cm. Cari n.", "steps": ["Ketebalan 1 rim=800×9.4×10⁻³=7.52cm.", "n=225.6÷7.52=30."], "ans": "n=30"}], "exercises": [{"group": "2.2a", "title": "UJI MINDA 2.2a — Menukar kepada Bentuk Piawai", "questions": [{"num": 1, "stem": "Tuliskan nombor tunggal berikut dalam bentuk piawai.\n(a) 35\n(b) 481\n(c) 5 075\n(d) 97.25\n(e) 3 124.3\n(f) 0.9\n(g) 0.23\n(h) 0.0375", "parts": [{"label": "a", "ans": ["3.5x10^1"], "steps": ["35 = 3.5 × 10¹."]}, {"label": "b", "ans": ["4.81x10^2"], "steps": ["481 = 4.81 × 10²."]}, {"label": "c", "ans": ["5.075x10^3"], "steps": ["5075 = 5.075 × 10³."]}, {"label": "d", "ans": ["9.725x10^1"], "steps": ["97.25 = 9.725 × 10¹."]}, {"label": "e", "ans": ["3.1243x10^3"], "steps": ["3124.3 = 3.1243 × 10³."]}, {"label": "f", "ans": ["9.0x10^-1"], "steps": ["0.9 = 9.0 × 10⁻¹."]}, {"label": "g", "ans": ["2.3x10^-1"], "steps": ["0.23 = 2.3 × 10⁻¹."]}, {"label": "h", "ans": ["3.75x10^-2"], "steps": ["0.0375 = 3.75 × 10⁻²."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tukarkan nombor dalam bentuk piawai kepada nombor tunggal.\n(a) 2.5×10⁰\n(b) 3.75×10¹\n(c) 4.23×10²\n(d) 5.07×10³\n(e) 9.1×10⁴\n(f) 6.2×10⁻¹\n(g) 7.29×10⁻²\n(h) 1.034×10⁻³", "parts": [{"label": "a", "ans": ["2.5"], "steps": []}, {"label": "b", "ans": ["37.5"], "steps": []}, {"label": "c", "ans": ["423"], "steps": []}, {"label": "d", "ans": ["5070"], "steps": []}, {"label": "e", "ans": ["91000"], "steps": []}, {"label": "f", "ans": ["0.62"], "steps": []}, {"label": "g", "ans": ["0.0729"], "steps": []}, {"label": "h", "ans": ["0.001034"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Tukarkan ukuran sistem metrik kepada unit dalam kurungan. Nyatakan jawapan dalam bentuk piawai.\n(a) 1 050 kilometer [meter]\n(b) 216 gigabait [bait]\n(c) 95 mikrometer [meter]\n(d) 123 nanometer [meter]", "parts": [{"label": "a", "ans": ["1.05x10^6"], "steps": ["1050 km = 1050×1000 m = 1050000 m = 1.05×10⁶ m."]}, {"label": "b", "ans": ["2.16x10^11"], "steps": ["216 gigabait = 216×10⁹ bait = 2.16×10¹¹ bait."]}, {"label": "c", "ans": ["9.5x10^-5"], "steps": ["95 mikrometer = 95×10⁻⁶ m = 9.5×10⁻⁵ m."]}, {"label": "d", "ans": ["1.23x10^-7"], "steps": ["123 nanometer = 123×10⁻⁹ m = 1.23×10⁻⁷ m."]}], "open": false, "sample": null}]}, {"group": "2.2b", "title": "UJI MINDA 2.2b — Tambah dan Tolak dalam Bentuk Piawai", "questions": [{"num": 1, "stem": "Hitung nilai setiap operasi berikut. Nyatakan jawapan dalam bentuk piawai.\n(a) 2.4×10⁴+3.57×10⁴\n(b) 8.2×10⁶–4.27×10⁶\n(c) 5.23×10⁷+4.98×10⁷\n(d) 1.2×10⁵+3.74×10⁴\n(e) 5.7×10⁸–2.4×10⁷\n(f) 5.2×10⁻³–4.12×10⁻³", "parts": [{"label": "a", "ans": ["5.97x10^4"], "steps": ["(2.4+3.57)×10⁴ = 5.97×10⁴."]}, {"label": "b", "ans": ["3.93x10^6"], "steps": ["(8.2–4.27)×10⁶ = 3.93×10⁶."]}, {"label": "c", "ans": ["1.021x10^8"], "steps": ["(5.23+4.98)×10⁷ = 10.21×10⁷ = 1.021×10⁸."]}, {"label": "d", "ans": ["1.574x10^5"], "steps": ["3.74×10⁴ = 0.374×10⁵. (1.2+0.374)×10⁵ = 1.574×10⁵."]}, {"label": "e", "ans": ["5.46x10^8"], "steps": ["2.4×10⁷ = 0.24×10⁸. (5.7–0.24)×10⁸ = 5.46×10⁸."]}, {"label": "f", "ans": ["1.08x10^-3"], "steps": ["(5.2–4.12)×10⁻³ = 1.08×10⁻³."]}], "open": false, "sample": null}]}, {"group": "2.2c", "title": "UJI MINDA 2.2c — Darab dan Bahagi dalam Bentuk Piawai", "questions": [{"num": 1, "stem": "Hitung nilai setiap operasi berikut. Nyatakan jawapan dalam bentuk piawai.\n(a) 4×10⁵ × 3.7×10²\n(b) 7.5×10⁻³ × 5×10⁻⁶\n(c) 6.3×10⁵ × 4.0×10²\n(d) 5.3×10⁻³ × 4×10⁵\n(e) (1.08×10²) ÷ (2.4×10⁴)\n(f) (9.6×10⁻²) ÷ (1.5×10⁻⁵)\n(g) (5.9×10⁵) ÷ (2×10²)\n(h) (2.58×10⁴) ÷ (0.3×10⁻⁴)", "parts": [{"label": "a", "ans": ["1.48x10^8"], "steps": ["(4×3.7)×10⁵⁺² = 14.8×10⁷ = 1.48×10⁸."]}, {"label": "b", "ans": ["3.75x10^-8"], "steps": ["(7.5×5)×10⁻³⁻⁶ = 37.5×10⁻⁹ = 3.75×10⁻⁸."]}, {"label": "c", "ans": ["2.52x10^8"], "steps": ["(6.3×4.0)×10⁵⁺² = 25.2×10⁷ = 2.52×10⁸."]}, {"label": "d", "ans": ["2.12x10^3"], "steps": ["(5.3×4)×10⁻³⁺⁵ = 21.2×10² = 2.12×10³."]}, {"label": "e", "ans": ["4.5x10^-3"], "steps": ["(1.08÷2.4)×10²⁻⁴ = 0.45×10⁻² = 4.5×10⁻³."]}, {"label": "f", "ans": ["6.4x10^3"], "steps": ["(9.6÷1.5)×10⁻²⁻⁽⁻⁵⁾ = 6.4×10³."]}, {"label": "g", "ans": ["2.95x10^3"], "steps": ["(5.9÷2)×10⁵⁻² = 2.95×10³."]}, {"label": "h", "ans": ["8.6x10^8"], "steps": ["(2.58÷0.3)×10⁴⁻⁽⁻⁴⁾ = 8.6×10⁸."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kolam renang mudah alih 305cm×183cm×56cm. Hitung isi padu maksimum air (liter), bentuk piawai, 4 a.b. [1 liter=1000cm³]", "parts": [{"label": null, "ans": ["3.126x10^3"], "steps": ["Isi padu = 305×183×56 = 3126840 cm³.", "= 3126.84 liter = 3.12684×10³ liter ≈ 3.126×10³ liter (4 a.b.)."]}], "open": false, "sample": null}, {"num": 3, "stem": "Syazwani pindah data 2 terabait ke pemacu pena 32 gigabait. Bilangan MINIMUM pemacu pena diperlukan?", "parts": [{"label": null, "ans": ["63"], "steps": ["2 terabait = 2000 gigabait.", "2000÷32 = 62.5 → bundarkan ke ATAS = 63 pemacu pena."]}], "open": false, "sample": null}, {"num": 4, "stem": "Diberi 1 milimeter=10⁻³ meter dan 1 mikrometer=10⁻⁶ meter. Hitung nilai 1 milimeter dalam mikrometer.", "parts": [{"label": null, "ans": ["1000", "103"], "steps": ["1mm = 10⁻³ m. 1µm = 10⁻⁶ m.", "1mm ÷ 1µm = 10⁻³/10⁻⁶ = 10³ = 1000 mikrometer."]}], "open": false, "sample": null}]}, {"group": "2.2d", "title": "UJI MINDA 2.2d — Menyelesaikan Masalah", "questions": [{"num": 1, "stem": "Purata penggunaan air sehari sebuah kawasan perumahan=6950 m³. Hitung jumlah penggunaan air Februari 2016 (tahun lompat, 29 hari). Bentuk piawai, 3 a.b.", "parts": [{"label": null, "ans": ["2.02x10^5"], "steps": ["Jumlah = 6950×29 = 201550 m³.", "= 2.0155×10⁵ ≈ 2.02×10⁵ m³ (3 a.b.)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Jarak dari matahari: Utarid=5.791×10⁷km, Bumi=1.496×10⁸km, Neptun=4.495×10⁹km. Hitung beza jarak (a) Utarid-Bumi (b) Utarid-Neptun (c) Bumi-Neptun. Bentuk piawai, 3 a.b.", "parts": [{"label": "a", "ans": ["9.17x10^7"], "steps": ["1.496×10⁸–5.791×10⁷ = 14.96×10⁷–5.791×10⁷ = 9.169×10⁷ ≈ 9.17×10⁷ km."]}, {"label": "b", "ans": ["4.44x10^9"], "steps": ["4.495×10⁹–5.791×10⁷ = 449.5×10⁷–5.791×10⁷ = 443.709×10⁷ ≈ 4.44×10⁹ km."]}, {"label": "c", "ans": ["4.35x10^9"], "steps": ["4.495×10⁹–1.496×10⁸ = 449.5×10⁷–14.96×10⁷ = 434.54×10⁷ ≈ 4.35×10⁹ km."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 2", "exercises": [{"group": "Mahir Diri Bab 2", "title": "Mahir Diri — Bentuk Piawai", "questions": [{"num": 1, "stem": "Dewan orang ramai perlu 6185 keping jubin 30cm×30cm untuk lantai.\n(a) Hitung luas lantai (m²), bentuk piawai, 3 a.b.\n(b) Kos sekeping jubin RM1.75. Hitung jumlah kos (RM terdekat).", "parts": [{"label": "a", "ans": ["5.57x10^2"], "steps": ["Luas 1 jubin = 0.3×0.3 = 0.09 m².", "Jumlah luas = 6185×0.09 = 556.65 m² ≈ 5.57×10² m² (3 a.b.)."]}, {"label": "b", "ans": ["10824"], "steps": ["Jumlah kos = 6185×RM1.75 = RM10 823.75 ≈ RM10 824."]}], "open": false, "sample": null}, {"num": 2, "stem": "Encik Hanif: Kota Bharu→Kuala Terengganu 163km(2j18m), Kuala Terengganu→Setiu 114km(1j40m), Setiu→Kota Bharu 51km(1j5m). Hitung purata laju setiap leg (km/j, 3 a.b.).", "parts": [{"label": "i", "ans": ["70.9"], "steps": ["163km ÷ 2.3jam(2j18m=2.3j) = 70.9 km/j (3 a.b.)."]}, {"label": "ii", "ans": ["47.1"], "steps": ["114km ÷ (1+40/60)jam = 114÷1.6667 = 68.4? semak: 1j40m=1.6667j. 114/1.6667=68.4. (Nota: susunan jawapan mengikut skema — semak label leg dengan buku fizikal.)"]}, {"label": "iii", "ans": ["68.4"], "steps": []}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 2", "title": "Masteri Kendiri — Bentuk Piawai", "questions": [{"num": 1, "stem": "Tiga planet: Utarid(diameter 4879km), Neptun(diameter 49244km), Musytari(diameter 139822km).\n(a) Hitung luas permukaan ketiga-tiga planet (km²), bentuk piawai, 3 a.b. [Luas permukaan sfera=4πj², π=3.142]\n(b) Beza luas permukaan planet terbesar & terkecil (4 a.b.).", "parts": [{"label": "utarid", "ans": ["7.48x10^7"], "steps": ["Jejari=4879/2=2439.5km. Luas=4×3.142×2439.5² ≈ 7.48×10⁷ km²."]}, {"label": "neptun", "ans": ["7.62x10^9"], "steps": ["Jejari=24622km. Luas=4×3.142×24622² ≈ 7.62×10⁹ km²."]}, {"label": "musytari", "ans": ["6.14x10^10"], "steps": ["Jejari=69911km. Luas=4×3.142×69911² ≈ 6.14×10¹⁰ km²."]}, {"label": "beza", "ans": ["6.133x10^10"], "steps": ["Terbesar(Musytari)–Terkecil(Utarid) = 6.14×10¹⁰–7.48×10⁷ ≈ 6.133×10¹⁰ km² (4 a.b.)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kertas A4: 70 GSM dan 80 GSM (297mm×210mm). Hitung jisim sehelai kertas (gram), bentuk piawai, 3 a.b.", "parts": [{"label": "gsm70", "ans": ["4.37"], "steps": ["Luas = 0.297×0.210 = 0.06237 m². Jisim = 70×0.06237 = 4.3659 ≈ 4.37 g."]}, {"label": "gsm80", "ans": ["4.99"], "steps": ["Jisim = 80×0.06237 = 4.9896 ≈ 4.99 g."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

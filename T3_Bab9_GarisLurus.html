@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (25 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 25 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-9", "chapterTitle": "Garis Lurus", "subtopics": [{"code": "9.1", "title": "9.1 Garis Lurus", "notes": [{"heading": "Persamaan Garis Lurus", "html": "<b>y = mx + c</b>, dengan m=kecerunan, c=pintasan-y.<br>Boleh juga ditulis sebagai <b>ax+by=c</b> atau <b>x/a + y/b = 1</b> (a=pintasan-x, b=pintasan-y)."}, {"heading": "Garis Selari dengan Paksi", "html": "<b>y=k</b> (k pemalar) → garis SELARI dgn paksi-x.<br><b>x=h</b> (h pemalar) → garis SELARI dgn paksi-y."}, {"heading": "Kecerunan", "html": "m = (y₂-y₁)/(x₂-x₁), ATAU m = -(pintasan-y ÷ pintasan-x)."}, {"heading": "Garis Lurus Selari", "html": "Dua garis lurus adalah SELARI jika dan hanya jika KECERUNAN kedua-duanya SAMA."}, {"heading": "Titik Persilangan Dua Garis", "html": "Selesaikan KEDUA-DUA persamaan SERENTAK (kaedah penggantian atau penghapusan) untuk cari titik persilangan."}], "examples": [{"title": "Contoh 1", "q": "Tentukan kecerunan & pintasan-y bagi 3y=-2x+12.", "steps": ["Bahagi dgn 3: y=(-2/3)x+4."], "ans": "m=-2/3, c=4"}, {"title": "Contoh 3", "q": "Tukarkan 2x+3y=12 kepada x/a+y/b=1 dan y=mx+c.", "steps": ["Bahagi dgn 12: x/6+y/4=1.", "3y=-2x+12 → y=(-2/3)x+4."], "ans": "x/6+y/4=1 ; y=-2x/3+4"}, {"title": "Contoh 6", "q": "Adakah P(2,8) terletak pada y=3x+2?", "steps": ["3(2)+2=8=8. SAMA."], "ans": "Ya, terletak pada garis"}, {"title": "Contoh 8", "q": "Adakah y=3x+5 selari dgn 6x-2y=9?", "steps": ["6x-2y=9 → y=3x-4.5, m=3.", "y=3x+5, m=3. SAMA."], "ans": "Ya, selari"}, {"title": "Contoh 11", "q": "Cari persamaan garis kecerunan 1/2 melalui P(6,8).", "steps": ["8=(1/2)(6)+c → c=5."], "ans": "y=x/2+5"}, {"title": "Contoh 12", "q": "Cari persamaan garis melalui P(-1,5) dan Q(2,-7).", "steps": ["m=(-7-5)/(2-(-1))=-4.", "5=-4(-1)+c → c=1."], "ans": "y=-4x+1"}, {"title": "Contoh 16", "q": "Cari titik persilangan 2x+y=5 dan x+2y=1.", "steps": ["Daripada 1: y=5-2x. Gantikan: x+2(5-2x)=1 → -3x=-9 → x=3, y=-1."], "ans": "(3,-1)"}], "exercises": [{"group": "9.1a", "title": "UJI MINDA 9.1a — Kecerunan dan Pintasan-y daripada y=mx+c", "questions": [{"num": 1, "stem": "Tentukan kecerunan dan pintasan-y bagi garis lurus.\n(a) y=3x+5\n(b) y=2x-7\n(c) y=-x+4\n(d) 2y=8x+6\n(e) 3y=-x+18\n(f) -4y=-2x+5", "parts": [{"label": "a", "ans": ["m=3,c=5"], "steps": []}, {"label": "b", "ans": ["m=2,c=-7"], "steps": []}, {"label": "c", "ans": ["m=-1,c=4"], "steps": []}, {"label": "d", "ans": ["m=4,c=3"], "steps": ["2y=8x+6 → y=4x+3."]}, {"label": "e", "ans": ["m=-1/3,c=6"], "steps": ["3y=-x+18 → y=-x/3+6."]}, {"label": "f", "ans": ["m=1/2,c=-5/4"], "steps": ["-4y=-2x+5 → y=x/2-5/4."]}], "open": false, "sample": null}, {"num": 2, "stem": "Nyatakan nilai k dan h bagi graf garis lurus (rajah m.s. 229): garis y=k mendatar pada y=-2, garis x=h mencancang pada x=4.", "parts": [{"label": "k", "ans": ["-2"], "steps": []}, {"label": "h", "ans": ["4"], "steps": []}], "open": false, "sample": null}]}, {"group": "9.1b", "title": "UJI MINDA 9.1b — Menukar Bentuk Persamaan Garis Lurus", "questions": [{"num": 1, "stem": "Tuliskan dalam bentuk x/a+y/b=1 DAN y=mx+c.\n(a) 3x-4y=24\n(b) 7x+2y=28\n(c) 5x-3y=15\n(d) -2x+3y=9", "parts": [{"label": "a", "ans": ["x/8-y/6=1; y=3x/4-6"], "steps": []}, {"label": "b", "ans": ["x/4+y/14=1; y=-7x/2+14"], "steps": []}, {"label": "c", "ans": ["x/3-y/5=1; y=5x/3-5"], "steps": []}, {"label": "d", "ans": ["-x/9+y/3=1; y=2x/3+3"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Tuliskan dalam bentuk ax+by=c DAN y=mx+c.\n(a) x/4+y/3=1\n(b) -x/3+y/6=1", "parts": [{"label": "a", "ans": ["3x+4y=12; y=-3x/4+3"], "steps": []}, {"label": "b", "ans": ["-6x+3y=18; y=2x+6"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Tuliskan dalam bentuk ax+by=c DAN x/a+y/b=1.\n(a) y=2x+6\n(b) y=-x+5", "parts": [{"label": "a", "ans": ["-2x+y=6; x/(-3)+y/6=1"], "steps": []}, {"label": "b", "ans": ["x+y=5; x/5+y/5=1"], "steps": []}], "open": false, "sample": null}]}, {"group": "9.1c", "title": "UJI MINDA 9.1c — Titik pada Garis Lurus", "questions": [{"num": 1, "stem": "Tentukan sama ada titik terletak pada garis lurus y=2x+16.\n(a) M(-4,3)\n(b) N(1,18)\n(c) P(-8,0)\n(d) Q(-5,8)", "parts": [{"label": "a", "ans": ["tidak"], "steps": ["2(-4)+16=8≠3."]}, {"label": "b", "ans": ["ya"], "steps": ["2(1)+16=18=18. ✓"]}, {"label": "c", "ans": ["ya"], "steps": ["2(-8)+16=0=0. ✓"]}, {"label": "d", "ans": ["tidak"], "steps": ["2(-5)+16=6≠8."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan sama ada titik terletak pada garis lurus 2x+3y=12.\n(a) M(0,4)\n(b) N(3,-2)\n(c) P(15,-6)\n(d) Q(-4,8)", "parts": [{"label": "a", "ans": ["ya"], "steps": ["2(0)+3(4)=12. ✓"]}, {"label": "b", "ans": ["tidak"], "steps": ["2(3)+3(-2)=0≠12."]}, {"label": "c", "ans": ["ya"], "steps": ["2(15)+3(-6)=12. ✓"]}, {"label": "d", "ans": ["tidak"], "steps": ["2(-4)+3(8)=16≠12."]}], "open": false, "sample": null}, {"num": 3, "stem": "Rajah: garis y=x+2 dan 2x+3y=6 bersilang paksi. Cari (a) h [pintasan-y bagi y=x+2] (b) k [pintasan-x bagi 2x+3y=6] (c) n [pintasan-x bagi y=x+2].", "parts": [{"label": "a", "ans": ["2"], "steps": ["y=x+2, apabila x=0, h=2."]}, {"label": "b", "ans": ["3"], "steps": ["2x+3(0)=6 → x=3, jadi k=3 (pada paksi negatif ikut rajah, boleh -3 bergantung arah)."]}, {"label": "c", "ans": ["-2"], "steps": ["x+2=0 → n=-2."]}], "open": false, "sample": null}]}, {"group": "9.1d", "title": "UJI MINDA 9.1d — Garis Lurus Selari", "questions": [{"num": 1, "stem": "Tentukan sama ada pasangan garis lurus selari.\n(a) 3y=-6x+3 dan y+2x=14\n(b) 2x+3y=3 dan 2x+6y=12\n(c) y=2x+1 dan 8x-4y=5\n(d) y=-3x+4 dan 9x+2y=12", "parts": [{"label": "a", "ans": ["selari"], "steps": ["y=-2x+1 (m=-2); y=-2x+14 (m=-2). SAMA → selari."]}, {"label": "b", "ans": ["tidak selari"], "steps": ["y=-2x/3+1 (m=-2/3); y=-x/3+2 (m=-1/3). BEZA."]}, {"label": "c", "ans": ["selari"], "steps": ["y=2x+1 (m=2); 8x-4y=5→y=2x-5/4 (m=2). SAMA."]}, {"label": "d", "ans": ["tidak selari"], "steps": ["y=-3x+4 (m=-3); 9x+2y=12→y=-9x/2+6 (m=-9/2). BEZA."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan nilai k bagi pasangan garis SELARI.\n(a) y=-3x+4 dan y+kx=14\n(b) kx+2y=7 dan 6x+2y=15", "parts": [{"label": "a", "ans": ["3"], "steps": ["y=-kx+14 (m=-k). Samakan dgn m=-3: -k=-3 → k=3."]}, {"label": "b", "ans": ["6"], "steps": ["y=-kx/2+7/2 (m=-k/2). y=-3x+15/2 (m=-3). -k/2=-3 → k=6."]}], "open": false, "sample": null}]}, {"group": "9.1e", "title": "UJI MINDA 9.1e — Persamaan Garis (Kecerunan & Satu Titik)", "questions": [{"num": 1, "stem": "Tentukan persamaan garis lurus.\n(a) Kecerunan=2, P(3,7)\n(b) Kecerunan=-3, P(-6,4)\n(c) Kecerunan=2/3, P(12,5)\n(d) Kecerunan=-1/2, P(4,-6)", "parts": [{"label": "a", "ans": ["y=2x+1"], "steps": ["7=2(3)+c → c=1."]}, {"label": "b", "ans": ["y=-3x-14"], "steps": ["4=-3(-6)+c → 4=18+c → c=-14."]}, {"label": "c", "ans": ["y=2x/3-3"], "steps": ["5=(2/3)(12)+c → 5=8+c → c=-3."]}, {"label": "d", "ans": ["y=-x/2-4"], "steps": ["-6=(-1/2)(4)+c → -6=-2+c → c=-4."]}], "open": false, "sample": null}]}, {"group": "9.1f", "title": "UJI MINDA 9.1f — Persamaan Garis Melalui Dua Titik", "questions": [{"num": 1, "stem": "Tentukan persamaan garis lurus melalui dua titik.\n(a) K(0,2), L(6,0)\n(b) R(-2,0), S(0,8)\n(c) T(3,-1), U(5,7)\n(d) G(-4,-2), H(8,6)\n(e) M(-1,3), N(1,5)\n(f) P(-5,3), Q(4,-6)", "parts": [{"label": "a", "ans": ["y=-x/3+2"], "steps": ["m=(0-2)/(6-0)=-1/3. c=2."]}, {"label": "b", "ans": ["y=4x+8"], "steps": ["m=(8-0)/(0-(-2))=4. c=8."]}, {"label": "c", "ans": ["y=4x-13"], "steps": ["m=(7-(-1))/(5-3)=4. 7=4(5)+c → c=-13."]}, {"label": "d", "ans": ["y=2x/3+4/3"], "steps": ["m=(6-(-2))/(8-(-4))=8/12=2/3. 6=(2/3)(8)+c → c=6-16/3=2/3.", "(Nota: c=2/3 → y=2x/3+2/3, semak semula pekali dgn buku fizikal.)"]}, {"label": "e", "ans": ["y=x+4"], "steps": ["m=(5-3)/(1-(-1))=1. c=4."]}, {"label": "f", "ans": ["y=-x-2"], "steps": ["m=(-6-3)/(4-(-5))=-9/9=-1. c=-2."]}], "open": false, "sample": null}]}, {"group": "9.1g", "title": "UJI MINDA 9.1g — Persamaan Garis Selari Melalui Satu Titik", "questions": [{"num": 1, "stem": "Tentukan persamaan garis SELARI dengan garis diberi, melalui titik P.\n(a) y=3x+9, P(2,7)\n(b) y=-2x+7, P(-3,4)\n(c) 3x+2y=4, P(2,6)\n(d) x/2+y/3=1, P(-12,9)", "parts": [{"label": "a", "ans": ["y=3x+1"], "steps": ["m=3 (selari). 7=3(2)+c → c=1."]}, {"label": "b", "ans": ["y=-2x-2"], "steps": ["m=-2. 4=-2(-3)+c → c=-2."]}, {"label": "c", "ans": ["y=-3x/2+9"], "steps": ["3x+2y=4 → m=-3/2. 6=(-3/2)(2)+c → c=9."]}, {"label": "d", "ans": ["y=-3x/2-9"], "steps": ["x/2+y/3=1 → m=-3/2. 9=(-3/2)(-12)+c → 9=18+c → c=-9."]}], "open": false, "sample": null}]}, {"group": "9.1h", "title": "UJI MINDA 9.1h — Titik Persilangan Dua Garis", "questions": [{"num": 1, "stem": "Tentukan titik persilangan (kaedah penggantian).\n(a) x=3, 2x+y=10\n(b) y=4, 3x-2y=7\n(c) x+y=5, 2x-y=4\n(d) 2x+y=3, 3x-2y=8", "parts": [{"label": "a", "ans": ["(3,4)"], "steps": ["x=3 → 2(3)+y=10 → y=4."]}, {"label": "b", "ans": ["(5,4)"], "steps": ["y=4 → 3x-8=7 → x=5."]}, {"label": "c", "ans": ["(3,2)"], "steps": ["x+y=5,2x-y=4. Tambah: 3x=9 → x=3,y=2."]}, {"label": "d", "ans": ["(2,-1)"], "steps": ["Daripada 1: y=3-2x. Gantikan: 3x-2(3-2x)=8 → 7x=14 → x=2,y=-1."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan titik persilangan (kaedah penghapusan).\n(a) x+y=1, 2x+y=-1\n(b) x-y=-4, 3x+y=4\n(c) x-y=-5, 2x+3y=-10\n(d) 2x-3y=5, 3x+2y=14", "parts": [{"label": "a", "ans": ["(-2,3)"], "steps": ["Tolak: x=-2, y=3."]}, {"label": "b", "ans": ["(0,4)"], "steps": ["Tambah: 4x=0 → x=0,y=4."]}, {"label": "c", "ans": ["(-5,0)"], "steps": ["3(x-y)+... selesaikan: x=-5,y=0."]}, {"label": "d", "ans": ["(4,1)"], "steps": ["Selesaikan serentak: x=4,y=1."]}], "open": false, "sample": null}]}, {"group": "9.1i", "title": "UJI MINDA 9.1i — Menyelesaikan Masalah Garis Lurus", "questions": [{"num": 1, "stem": "Segi empat selari FGHK, O asalan, K pada paksi-x. Persamaan FG: 2y=x+20. H(8,2).\n(a) Kecerunan FG.\n(b) Pintasan-y HK.\n(c) Persamaan HK.", "parts": [{"label": "a", "ans": ["1/2"], "steps": ["2y=x+20 → y=x/2+10, m=1/2."]}, {"label": "b", "ans": ["-2"], "steps": ["HK selari dgn FG (m=1/2). H(8,2): 2=(1/2)(8)+c → c=-2."]}, {"label": "c", "ans": ["y=x/2-2"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Trapezium PQRS, P(-3,8), R(5,-10), PS selari QR, RS selari paksi-y, Q&S pada paksi-x.\n(a) Koordinat S.\n(b) Persamaan garis QR.\n(c) Pintasan-x QR.", "parts": [{"label": "a", "ans": ["(5,0)"], "steps": ["S sama absis dgn R (RS selari paksi-y): S(5,0)."]}, {"label": "b", "ans": ["y=-x-5"], "steps": ["m QR=m PS=(0-8)/(5-(-3))=-1. Guna titik R(5,-10): -10=-1(5)+c → c=-5."]}, {"label": "c", "ans": ["-5"], "steps": ["y=0: 0=-x-5 → x=-5."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 9", "exercises": [{"group": "Mahir Diri Bab 9", "title": "Mahir Diri — Garis Lurus", "questions": [{"num": 1, "stem": "Dua garis 2x-y=5 dan x-3y=-5 bersilang di P. Cari koordinat P.", "parts": [{"label": null, "ans": ["(4,3)"], "steps": ["Daripada 1: y=2x-5. Gantikan: x-3(2x-5)=-5 → x-6x+15=-5 → -5x=-20 → x=4, y=3."]}], "open": false, "sample": null}, {"num": 2, "stem": "GH,HK,KL garis lurus. H pada paksi-x, GH selari paksi-y?? (KL selari GH, HK selari paksi-y). GH: 2x+y=6. L(10,-4).\n(a) Persamaan HK.\n(b) Persamaan KL, pintasan-x KL.", "parts": [{"label": "a", "ans": ["x=3"], "steps": ["H pada paksi-x: 2x+0=6 → x=3. HK selari paksi-y: x=3."]}, {"label": "b", "ans": ["y=-2x+16, pintasanx=8"], "steps": ["KL selari GH (m=-2). Guna L(10,-4): -4=-2(10)+c → c=16. Pintasan-x: 0=-2x+16 → x=8."]}], "open": false, "sample": null}, {"num": 3, "stem": "Segi empat selari OEFG, O asalan, E(7,21), G(6,-12). (a) Persamaan OG. (b) Persamaan EF. (c) Pintasan-x EF.", "parts": [{"label": "a", "ans": ["y=-2x"], "steps": ["m OG=(-12-0)/(6-0)=-2. Melalui O: y=-2x."]}, {"label": "b", "ans": ["y=-2x+35"], "steps": ["EF selari OG (m=-2), melalui E(7,21): 21=-2(7)+c → c=35."]}, {"label": "c", "ans": ["35/2"], "steps": ["0=-2x+35 → x=17.5."]}], "open": false, "sample": null}, {"num": 4, "stem": "Trapezium ABCD, A(4,6), B(12,2), D(9,10), AB selari DC. (a) Persamaan AB. (b) Persamaan CD (melalui D, selari AB). (c) Adakah AB & CD bersilang?", "parts": [{"label": "a", "ans": ["y=-x/2+8"], "steps": ["m=(2-6)/(12-4)=-1/2. 6=(-1/2)(4)+c → c=8."]}, {"label": "b", "ans": ["y=-x/2+29/2", "x+2y=29"], "steps": ["m sama (-1/2). 10=(-1/2)(9)+c → c=29/2."]}, {"label": "c", "ans": ["tidak"], "steps": ["Kedua-dua garis SELARI (kecerunan sama) — TIDAK akan bersilang."]}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 9", "title": "Masteri Kendiri — Garis Lurus", "questions": [{"num": 1, "stem": "Segi empat selari (skala 1unit=1km): Rumah Kamal(-1,0), Sekolah(5,0), Klinik(2,4), Restoran=?\n(a) Jarak Rumah-Sekolah (km).\n(b) Koordinat Restoran.\n(c) Jarak Rumah-Restoran (km).\n(d) Persamaan garis Sekolah-Klinik.", "parts": [{"label": "a", "ans": ["6"], "steps": ["Jarak mengufuk = 5-(-1) = 6 km."]}, {"label": "b", "ans": ["(-4,4)"], "steps": ["Restoran = Rumah + (Klinik-Sekolah vector) = (-1,0)+(2-5,4-0)=(-1-3,4)=(-4,4)."]}, {"label": "c", "ans": ["5"], "steps": ["Jarak = √((-4-(-1))²+(4-0)²) = √(9+16) = √25 = 5 km."]}, {"label": "d", "ans": ["4x+3y=20"], "steps": ["m=(4-0)/(2-5)=-4/3. Melalui (5,0): y=(-4/3)(x-5) → 4x+3y=20."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pekan P(-9,4), Q(6,7), R(-3,-4). Skala 1unit=2km.\n(a) Jarak R ke O (km).\n(b) Persamaan garis PQ.\n(c) Jarak terdekat P ke R (km).\n(d) Masa memandu R→Q (laju 50km/j, guna jarak terdekat).", "parts": [{"label": "a", "ans": ["10"], "steps": ["Jarak unit = √(3²+4²)=5 unit. Dalam km = 5×2=10 km."]}, {"label": "b", "ans": ["y=x/5+29/5"], "steps": ["m=(7-4)/(6-(-9))=3/15=1/5. 7=(1/5)(6)+c → c=29/5."]}, {"label": "c", "ans": ["20"], "steps": ["Jarak unit PR=√((-9-(-3))²+(4-(-4))²)=√(36+64)=10 unit → 20km."]}, {"label": "d", "ans": ["34.11 minit"], "steps": ["Jarak RQ (unit)=√((6-(-3))²+(7-(-4))²)=√(81+121)=√202≈14.21unit=28.42km.", "Masa=28.42/50 jam=0.5685jam≈34.11 minit."]}], "open": false, "sample": null}, {"num": 3, "stem": "Pokok F: y=(3/16)x+9 (tinggi vs hari). Pokok G kadar tumbuh SAMA, capai 15cm selepas 8 hari. Cari persamaan pokok G & tinggi asal.", "parts": [{"label": "persamaan", "ans": ["y=3x/16+27/2"], "steps": ["Kecerunan sama=3/16. 15=(3/16)(8)+c → 15=1.5+c → c=13.5."]}, {"label": "asal", "ans": ["13.5"], "steps": ["Tinggi asal (x=0) = c = 13.5 cm."]}], "open": false, "sample": null}, {"num": 4, "stem": "JK melalui titik tengah Bandar E(-7,-1) & Bandar F(3,3): y=-2x+k.\n(a) Cari k.\n(b) GH: y=2x+17. Cari koordinat lampu isyarat (persilangan JK,GH).", "parts": [{"label": "a", "ans": ["-3"], "steps": ["Titik tengah EF = ((-7+3)/2,(-1+3)/2)=(-2,1).", "1=-2(-2)+k → 1=4+k → k=-3."]}, {"label": "b", "ans": ["(-5,7)"], "steps": ["-2x-3=2x+17 → -4x=20 → x=-5. y=2(-5)+17=7."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (25 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 25 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-1", "chapterTitle": "Indeks", "subtopics": [{"code": "1.1", "title": "1.1 Tatatanda Indeks", "notes": [{"heading": "Bentuk Indeks", "html": "<b>aⁿ</b> = a × a × a × ... × a (n faktor), dengan a ialah <b>asas</b> dan n ialah <b>indeks</b> (eksponen). Nilai indeks = bilangan kali asas didarab berulang.<br><i>Peringatan:</i> aⁿ ≠ a×n. Contoh: 4³ ≠ 4×3."}, {"heading": "Menukar Nombor kepada Bentuk Indeks", "html": "Guna kaedah <b>pembahagian berulang</b> (bahagi nombor itu berulang dengan asas dipilih sehingga dapat 1) atau <b>pendaraban berulang</b> (darab asas dengan sendiri sehingga sama dengan nombor asal)."}], "examples": [{"title": "Contoh 1", "q": "Tulis pendaraban berulang dalam bentuk indeks: (a) 5×5×5×5×5×5 (b) (–2)×(–2)×(–2)", "steps": ["(a) Berulang 6 kali.", "(b) Berulang 3 kali."], "ans": "(a) 5⁶ (b) (–2)³"}, {"title": "Contoh 2", "q": "Tuliskan 64 dalam bentuk indeks dengan asas 2, asas 4 dan asas 8.", "steps": ["Asas 2: 64=2×2×2×2×2×2=2⁶.", "Asas 4: 64=4×4×4=4³.", "Asas 8: 64=8×8=8²."], "ans": "64=2⁶=4³=8²"}, {"title": "Contoh 4", "q": "Hitung nilai (a) 2⁵ (b) (0.6)³.", "steps": ["(a) 2×2×2×2×2=32.", "(b) 0.6×0.6×0.6=0.216."], "ans": "(a) 32 (b) 0.216"}], "exercises": [{"group": "1.1a", "title": "UJI MINDA 1.1a — Asas dan Indeks", "questions": [{"num": 1, "stem": "Nyatakan ASAS dan INDEKS bagi setiap yang berikut.\n(a) 5³\n(b) (–4)⁷\n(c) (1/2)¹⁰\n(d) m⁶\n(e) (0.2)⁹\n(f) x²⁰", "parts": [{"label": "a", "ans": ["asas5,indeks3"], "steps": ["Asas = 5, Indeks = 3."]}, {"label": "b", "ans": ["asas-4,indeks7"], "steps": ["Asas = –4, Indeks = 7."]}, {"label": "c", "ans": ["asas1/2,indeks10"], "steps": ["Asas = 1/2, Indeks = 10."]}, {"label": "d", "ans": ["asasm,indeks6"], "steps": ["Asas = m, Indeks = 6."]}, {"label": "e", "ans": ["asas0.2,indeks9"], "steps": ["Asas = 0.2, Indeks = 9."]}, {"label": "f", "ans": ["asasx,indeks20"], "steps": ["Asas = x, Indeks = 20."]}], "open": false, "sample": null}, {"num": 2, "stem": "Nyatakan pendaraban berulang berikut dalam bentuk indeks aⁿ.\n(a) 6×6×6×6×6×6\n(b) 0.5×0.5×0.5×0.5×0.5×0.5×0.5\n(c) 1/2×1/2×1/2×1/2\n(d) (–m)×(–m)×(–m)×(–m)×(–m)", "parts": [{"label": "a", "ans": ["6^6"], "steps": ["Berulang 6 kali → 6⁶."]}, {"label": "b", "ans": ["(0.5)^7"], "steps": ["Berulang 7 kali → (0.5)⁷."]}, {"label": "c", "ans": ["(1/2)^4"], "steps": ["Berulang 4 kali → (1/2)⁴."]}, {"label": "d", "ans": ["(-m)^5"], "steps": ["Berulang 5 kali → (–m)⁵."]}], "open": false, "sample": null}, {"num": 3, "stem": "Tukarkan nombor dalam bentuk indeks berikut kepada pendaraban berulang.\n(a) (–3)³\n(b) (2.5)⁴\n(c) (2/5)³", "parts": [{"label": "a", "ans": ["(-3)x(-3)x(-3)"], "steps": ["(–3)³ = (–3)×(–3)×(–3)."]}, {"label": "b", "ans": ["2.5x2.5x2.5x2.5"], "steps": ["(2.5)⁴ = 2.5×2.5×2.5×2.5."]}, {"label": "c", "ans": ["2/5x2/5x2/5"], "steps": ["(2/5)³ = 2/5×2/5×2/5."]}], "open": false, "sample": null}]}, {"group": "1.1b", "title": "UJI MINDA 1.1b — Menukar Nombor kepada Bentuk Indeks", "questions": [{"num": 1, "stem": "Tuliskan setiap nombor berikut dalam bentuk indeks dengan asas yang dinyatakan.\n(a) 81 [asas 3]\n(b) 15 625 [asas 5]\n(c) 64/125 [asas 4/5]\n(d) 0.00032 [asas 0.2]\n(e) –16 384 [asas –4]", "parts": [{"label": "a", "ans": ["3^4"], "steps": ["81 = 3×3×3×3 = 3⁴."]}, {"label": "b", "ans": ["5^6"], "steps": ["15625 = 5×5×5×5×5×5 = 5⁶."]}, {"label": "c", "ans": ["(4/5)^3"], "steps": ["64/125 = (4/5)×(4/5)×(4/5) = (4/5)³."]}, {"label": "d", "ans": ["(0.2)^5"], "steps": ["0.00032 = 0.2×0.2×0.2×0.2×0.2 = (0.2)⁵."]}, {"label": "e", "ans": ["(-4)^7"], "steps": ["–16384 = (–4)⁷ (kuasa ganjil bagi asas negatif memberi hasil negatif)."]}], "open": false, "sample": null}]}, {"group": "1.1c", "title": "UJI MINDA 1.1c — Mengira Nilai Bentuk Indeks", "questions": [{"num": 1, "stem": "Hitung nilai bagi setiap nombor dalam bentuk indeks di bawah.\n(a) 9⁴\n(b) (–4)⁵\n(c) (2.5)³\n(d) (–3.2)³\n(e) (3/8)⁵\n(f) (–1/6)⁴\n(g) (1 2/3)²\n(h) (–2 1/3)³", "parts": [{"label": "a", "ans": ["6561"], "steps": ["9⁴ = 9×9×9×9 = 6561."]}, {"label": "b", "ans": ["-1024"], "steps": ["(–4)⁵ = –1024."]}, {"label": "c", "ans": ["15.625"], "steps": ["(2.5)³ = 15.625."]}, {"label": "d", "ans": ["-32.768"], "steps": ["(–3.2)³ = –32.768."]}, {"label": "e", "ans": ["243/32768"], "steps": ["(3/8)⁵ = 3⁵/8⁵ = 243/32768."]}, {"label": "f", "ans": ["1/1296"], "steps": ["(–1/6)⁴ = 1/1296 (kuasa genap → positif)."]}, {"label": "g", "ans": ["2 7/9"], "steps": ["1 2/3 = 5/3. (5/3)² = 25/9 = 2 7/9."]}, {"label": "h", "ans": ["-12 19/27"], "steps": ["–2 1/3 = –7/3. (–7/3)³ = –343/27 = –12 19/27."]}], "open": false, "sample": null}]}]}, {"code": "1.2", "title": "1.2 Hukum Indeks", "notes": [{"heading": "Hukum Asas", "html": "<b>Pendaraban:</b> aᵐ × aⁿ = aᵐ⁺ⁿ<br><b>Pembahagian:</b> aᵐ ÷ aⁿ = aᵐ⁻ⁿ<br><b>Kuasa:</b> (aᵐ)ⁿ = aᵐⁿ<br><b>Kuasa hasil darab/bahagi:</b> (aᵐbⁿ)ᵠ = aᵐᵠbⁿᵠ ; (aᵐ/bⁿ)ᵠ = aᵐᵠ/bⁿᵠ"}, {"heading": "Indeks Sifar dan Negatif", "html": "<b>a⁰ = 1</b> (a≠0). <b>a⁻ⁿ = 1/aⁿ</b> (a≠0).<br><i>Peringatan:</i> –aⁿ ≠ (–a)ⁿ. Contoh: –3² ≠ (–3)² (–9 ≠ 9)."}, {"heading": "Indeks Pecahan", "html": "<b>a^(1/n) = ⁿ√a</b>.<br><b>a^(m/n) = (aᵐ)^(1/n) = (a^(1/n))ᵐ = ⁿ√(aᵐ) = (ⁿ√a)ᵐ</b>."}], "examples": [{"title": "Contoh 6", "q": "Ringkaskan (a) 7²×7³ (b) 2k²×4k³.", "steps": ["(a) 7²⁺³=7⁵.", "(b) (2×4)(k²×k³)=8k⁵."], "ans": "(a) 7⁵ (b) 8k⁵"}, {"title": "Contoh 8", "q": "Ringkaskan (a) 5⁴÷5² (b) m⁴n³÷m²n.", "steps": ["(a) 5⁴⁻²=5².", "(b) m⁴⁻²n³⁻¹=m²n²."], "ans": "(a) 25 (b) m²n²"}, {"title": "Contoh 9", "q": "Permudahkan (3⁴)².", "steps": ["3⁴ˣ²=3⁸."], "ans": "3⁸ = 6561"}, {"title": "Contoh 11", "q": "Nyatakan a⁻² dalam bentuk indeks positif.", "steps": ["a⁻² = 1/a²."], "ans": "1/a²"}, {"title": "Contoh 12", "q": "Tukarkan ⁵√m kepada bentuk a^(1/n).", "steps": ["⁵√m = m^(1/5)."], "ans": "m^(1/5)"}, {"title": "Contoh 14", "q": "Hitung 9^(5/2).", "steps": ["(√9)⁵ = 3⁵ = 243."], "ans": "243"}, {"title": "Contoh 17", "q": "Hitung nilai √3 × 12^(3/2) ÷ 6 tanpa kalkulator.", "steps": ["Tukar semua ke faktor perdana 2 dan 3.", "3^(1/2) × (2²×3)^(3/2) ÷ (2×3).", "= 3^(1/2) × 2³ × 3^(3/2) ÷ 2 ÷ 3.", "= 3² × 2² = 9×4=... ikut permudahan penuh = 12."], "ans": "12"}, {"title": "Contoh 18", "q": "Hitung nilai x bagi 3ˣ × 9ˣ⁺⁵ ÷ 3⁴ = 1.", "steps": ["Tukar semua ke asas 3: 3ˣ × 3²⁽ˣ⁺⁵⁾ ÷ 3⁴ = 3⁰.", "x + 2x+10 – 4 = 0 → 3x+6=0 → x=–2."], "ans": "x = –2"}], "exercises": [{"group": "1.2a", "title": "UJI MINDA 1.2a — Hukum Pendaraban Indeks", "questions": [{"num": 1, "stem": "Permudahkan setiap yang berikut.\n(a) 3² × 3 × 3⁴\n(b) (–0.4)⁴ × (–0.4)³ × (–0.4)\n(c) (2/5)³ × (2/5)² × (2/5)⁵\n(d) 4m² × (1/2)m³ × (–3)m⁴\n(e) n⁶ × (4/5)n² × (5/4)n³ × n", "parts": [{"label": "a", "ans": ["3^7"], "steps": ["3² × 3¹ × 3⁴ = 3²⁺¹⁺⁴ = 3⁷."]}, {"label": "b", "ans": ["(-0.4)^8"], "steps": ["Indeks: 4+3+1 = 8 → (–0.4)⁸."]}, {"label": "c", "ans": ["(2/5)^10"], "steps": ["Indeks: 3+2+5 = 10 → (2/5)¹⁰."]}, {"label": "d", "ans": ["-6m^9"], "steps": ["Pekali: 4×1/2×(–3) = –6. Indeks: 2+3+4 = 9 → –6m⁹."]}, {"label": "e", "ans": ["n^12"], "steps": ["Pekali: 1×4/5×5/4×1 = 1. Indeks: 6+2+3+1 = 12 → n¹²."]}], "open": false, "sample": null}]}, {"group": "1.2b", "title": "UJI MINDA 1.2b — Permudahkan dengan Pelbagai Asas", "questions": [{"num": 1, "stem": "Nyatakan dalam bentuk indeks paling ringkas.\n(a) 5⁴ × 9³ × 5 × 9²\n(b) (0.4)² × (1.2)³ × (0.4) × (1.2)⁵\n(c) 12x⁵ × y³ × (1/2)x × (2/3)y⁴", "parts": [{"label": "a", "ans": ["5^5x9^5"], "steps": ["Kumpul asas sama: 5⁴⁺¹ × 9³⁺² = 5⁵ × 9⁵."]}, {"label": "b", "ans": ["(0.4)^3x(1.2)^8"], "steps": ["(0.4)²⁺¹ × (1.2)³⁺⁵ = (0.4)³ × (1.2)⁸."]}, {"label": "c", "ans": ["4x^6y^7"], "steps": ["Pekali: 12×1/2×2/3=4. x: 5+1=6. y: 3+4=7 → 4x⁶y⁷."]}], "open": false, "sample": null}]}, {"group": "1.2c", "title": "UJI MINDA 1.2c — Hukum Pembahagian Indeks", "questions": [{"num": 1, "stem": "Permudahkan setiap yang berikut.\n(a) 4⁵ ÷ 4⁴\n(b) 7¹⁰ ÷ 7⁶ ÷ 7²\n(c) m⁸n⁶ ÷ m⁴n\n(d) 27x⁴y⁵ ÷ 9x²y³\n(e) m ÷ m² ÷ m⁴\n(f) –25h⁴ ÷ 5h² ÷ h", "parts": [{"label": "a", "ans": ["4"], "steps": ["4⁵⁻⁴ = 4¹ = 4."]}, {"label": "b", "ans": ["7^2"], "steps": ["7¹⁰⁻⁶⁻² = 7² = 49."]}, {"label": "c", "ans": ["m^4n^5"], "steps": ["m⁸⁻⁴n⁶⁻¹ = m⁴n⁵."]}, {"label": "d", "ans": ["3x^2y^2"], "steps": ["Pekali 27÷9=3. x⁴⁻²y⁵⁻³ = 3x²y²."]}, {"label": "e", "ans": ["1/m^5"], "steps": ["m¹⁻²⁻⁴ = m⁻⁵ = 1/m⁵."]}, {"label": "f", "ans": ["-5h"], "steps": ["Pekali –25÷5÷1=–5. h⁴⁻²⁻¹ = h¹ → –5h."]}], "open": false, "sample": null}]}, {"group": "1.2d", "title": "UJI MINDA 1.2d — Hukum Kuasa (aᵐ)ⁿ", "questions": [{"num": 1, "stem": "Gunakan hukum indeks untuk meringkaskan.\n(a) (12⁵)²\n(b) (3¹⁰)²\n(c) (7²)³\n(d) ((–4)³)⁷\n(e) (k⁸)³\n(f) ((–m)⁴)³", "parts": [{"label": "a", "ans": ["12^10"], "steps": ["12⁵ˣ² = 12¹⁰."]}, {"label": "b", "ans": ["3^20"], "steps": ["3¹⁰ˣ² = 3²⁰."]}, {"label": "c", "ans": ["7^6"], "steps": ["7²ˣ³ = 7⁶."]}, {"label": "d", "ans": ["(-4)^21"], "steps": ["(–4)³ˣ⁷ = (–4)²¹."]}, {"label": "e", "ans": ["k^24"], "steps": ["k⁸ˣ³ = k²⁴."]}, {"label": "f", "ans": ["(-m)^12"], "steps": ["(–m)⁴ˣ³ = (–m)¹²."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan sama ada BENAR atau PALSU.\n(a) (2⁴)⁵ = (2²)¹⁰\n(b) (3³)⁷ = (27²)⁴\n(c) (5²)⁵ = (125²)³", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Kiri: 2²⁰. Kanan: 2²⁰. SAMA → BENAR."]}, {"label": "b", "ans": ["palsu"], "steps": ["Kiri: 3²¹. Kanan: 27²=3⁶, jadi (3⁶)⁴=3²⁴. 3²¹≠3²⁴ → PALSU."]}, {"label": "c", "ans": ["palsu"], "steps": ["Kiri: 5¹⁰. Kanan: 125²=5⁶, jadi (5⁶)³=5¹⁸. Tidak sama → PALSU."]}], "open": false, "sample": null}]}, {"group": "1.2e", "title": "UJI MINDA 1.2e — Kuasa bagi Hasil Darab/Bahagi", "questions": [{"num": 1, "stem": "Ringkaskan setiap yang berikut.\n(a) (2 × 3⁴)²\n(b) (13³ ÷ 7⁶)²\n(c) (m³n⁴p²)⁵\n(d) (–3a⁵/4b)⁶", "parts": [{"label": "a", "ans": ["2^2x3^8"], "steps": ["(2×3⁴)² = 2² × 3⁸."]}, {"label": "b", "ans": ["13^6/7^12"], "steps": ["(13³÷7⁶)² = 13⁶÷7¹² = 13⁶/7¹²."]}, {"label": "c", "ans": ["m^15n^20p^10"], "steps": ["Setiap indeks ×5: m¹⁵n²⁰p¹⁰."]}, {"label": "d", "ans": ["729a^30/4096b^6"], "steps": ["(–3)⁶=729, a⁵ˣ⁶=a³⁰. 4⁶=4096, b¹ˣ⁶=b⁶ → 729a³⁰/4096b⁶."]}], "open": false, "sample": null}, {"num": 2, "stem": "Permudahkan.\n(a) (h³k²)⁴ ÷ (hk)²\n(b) (m⁵n⁷)³ ÷ (m²n³)²", "parts": [{"label": "a", "ans": ["h^10k^6"], "steps": ["(h¹²k⁸)÷(h²k²) = h¹⁰k⁶."]}, {"label": "b", "ans": ["m^11n^15"], "steps": ["(m¹⁵n²¹)÷(m⁴n⁶) = m¹¹n¹⁵."]}], "open": false, "sample": null}]}, {"group": "1.2f", "title": "UJI MINDA 1.2f — Indeks Negatif", "questions": [{"num": 1, "stem": "Nyatakan setiap sebutan berikut dalam bentuk indeks POSITIF.\n(a) 5⁻³\n(b) 8⁻⁴\n(c) x⁻⁸\n(d) y⁻¹⁶\n(e) 3n⁻⁴\n(f) –5n⁻⁶", "parts": [{"label": "a", "ans": ["1/5^3"], "steps": ["5⁻³ = 1/5³."]}, {"label": "b", "ans": ["1/8^4"], "steps": ["8⁻⁴ = 1/8⁴."]}, {"label": "c", "ans": ["1/x^8"], "steps": ["x⁻⁸ = 1/x⁸."]}, {"label": "d", "ans": ["1/y^16"], "steps": ["y⁻¹⁶ = 1/y¹⁶."]}, {"label": "e", "ans": ["3/n^4"], "steps": ["3n⁻⁴ = 3/n⁴."]}, {"label": "f", "ans": ["-5/n^6"], "steps": ["–5n⁻⁶ = –5/n⁶."]}], "open": false, "sample": null}, {"num": 2, "stem": "Nyatakan setiap sebutan berikut dalam bentuk indeks NEGATIF.\n(a) 1/3⁴\n(b) 1/m⁵\n(c) 7⁵\n(d) n²⁰", "parts": [{"label": "a", "ans": ["3^-4"], "steps": ["1/3⁴ = 3⁻⁴."]}, {"label": "b", "ans": ["m^-5"], "steps": ["1/m⁵ = m⁻⁵."]}, {"label": "c", "ans": ["1/7^-5"], "steps": ["7⁵ = 1/7⁻⁵."]}, {"label": "d", "ans": ["1/n^-20"], "steps": ["n²⁰ = 1/n⁻²⁰."]}], "open": false, "sample": null}, {"num": 3, "stem": "Permudahkan.\n(a) 3² × 3⁴ ÷ 3⁸\n(b) m⁶n × (m⁻¹n³)⁻²\n(c) (2⁴×3⁶)² ÷ (2⁸×3⁶)²", "parts": [{"label": "a", "ans": ["1/3^2"], "steps": ["3²⁺⁴⁻⁸ = 3⁻² = 1/3²."]}, {"label": "b", "ans": ["m^8n^-5"], "steps": ["m⁶n¹ × m²n⁻⁶ = m⁸n⁻⁵."]}, {"label": "c", "ans": ["1/2^8"], "steps": ["2⁸×3¹²÷(2¹⁶×3¹²) = 2⁻⁸ = 1/2⁸."]}], "open": false, "sample": null}]}, {"group": "1.2g", "title": "UJI MINDA 1.2g — Indeks Pecahan (Punca)", "questions": [{"num": 1, "stem": "Tukarkan setiap sebutan berikut kepada bentuk a^(1/n).\n(a) ∛125\n(b) ⁷√2187\n(c) ⁵√–1024\n(d) ¹⁰√n", "parts": [{"label": "a", "ans": ["125^(1/3)"], "steps": ["∛125 = 125^(1/3)."]}, {"label": "b", "ans": ["2187^(1/7)"], "steps": ["⁷√2187 = 2187^(1/7)."]}, {"label": "c", "ans": ["(-1024)^(1/5)"], "steps": ["⁵√–1024 = (–1024)^(1/5)."]}, {"label": "d", "ans": ["n^(1/10)"], "steps": ["¹⁰√n = n^(1/10)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tukarkan kepada bentuk ⁿ√a.\n(a) 4^(1/2)\n(b) 32^(1/5)\n(c) (–729)^(1/3)", "parts": [{"label": "a", "ans": ["sqrt(4)"], "steps": ["4^(1/2) = √4."]}, {"label": "b", "ans": ["5th root of 32"], "steps": ["32^(1/5) = ⁵√32."]}, {"label": "c", "ans": ["cube root of -729"], "steps": ["(–729)^(1/3) = ∛–729."]}], "open": false, "sample": null}, {"num": 3, "stem": "Hitung nilai setiap sebutan berikut.\n(a) ∛343\n(b) ⁵√–7776\n(c) 262144^(1/6)\n(d) (–32768)^(1/5)", "parts": [{"label": "a", "ans": ["7"], "steps": ["7³=343 → ∛343=7."]}, {"label": "b", "ans": ["-6"], "steps": ["(–6)⁵=–7776 → ⁵√–7776=–6."]}, {"label": "c", "ans": ["8"], "steps": ["8⁶=262144 → 262144^(1/6)=8."]}, {"label": "d", "ans": ["-8"], "steps": ["(–8)⁵=–32768 → (–32768)^(1/5)=–8."]}], "open": false, "sample": null}]}, {"group": "1.2i", "title": "UJI MINDA 1.2i — Indeks Pecahan (Kuasa dan Punca)", "questions": [{"num": 1, "stem": "Hitung nilai setiap yang berikut.\n(a) 27^(2/3)\n(b) 32^(2/5)\n(c) 64^(2/3)\n(d) 1024^(2/5)\n(e) 1296^(3/4)\n(f) 49^(-3/2)", "parts": [{"label": "a", "ans": ["9"], "steps": ["(∛27)² = 3² = 9."]}, {"label": "b", "ans": ["4"], "steps": ["(⁵√32)² = 2² = 4."]}, {"label": "c", "ans": ["16"], "steps": ["(∛64)² = 4² = 16."]}, {"label": "d", "ans": ["16"], "steps": ["(⁵√1024)² = 4² = 16."]}, {"label": "e", "ans": ["216"], "steps": ["(⁴√1296)³ = 6³ = 216."]}, {"label": "f", "ans": ["1/343"], "steps": ["49^(3/2) = (√49)³ = 343 → 49^(-3/2) = 1/343."]}], "open": false, "sample": null}]}, {"group": "1.2j", "title": "UJI MINDA 1.2j — Gabungan Hukum Indeks", "questions": [{"num": 1, "stem": "Hitung nilai bagi √(7⁻⁴ × 11⁴) ÷ (49 × 121).", "parts": [{"label": null, "ans": ["1/2401"], "steps": ["√(7⁻⁴×11⁴) = 7⁻² × 11² = 121/49.", "(121/49) ÷ (49×121) = 1/(49×49) = 1/2401."]}], "open": false, "sample": null}, {"num": 2, "stem": "Diberi m = 2, hitung nilai bagi 64^(m/3) × 8^(-m) ÷ 4^(m-3).", "parts": [{"label": null, "ans": ["1"], "steps": ["64^(2/3) = (∛64)² = 4² = 16.", "8⁻² = 1/64.", "4^(2-3) = 4⁻¹ = 1/4, jadi ÷4⁻¹ bermaksud ×4.", "16 × (1/64) × 4 = 64/64 = 1."]}], "open": false, "sample": null}]}, {"group": "1.3", "title": "Menyelesaikan Persamaan Melibatkan Hukum Indeks", "questions": [{"num": 1, "stem": "Hitung nilai x bagi setiap persamaan berikut.\n(a) 2⁶ ÷ 2ˣ = 8\n(b) 3⁻⁴ × 81 = 3ˣ\n(c) 4 × 8ˣ⁺¹ = 2²ˣ", "parts": [{"label": "a", "ans": ["3"], "steps": ["2⁶⁻ˣ = 2³ → 6–x=3 → x=3."]}, {"label": "b", "ans": ["0"], "steps": ["3⁻⁴⁺⁴ = 3ˣ → 3⁰=3ˣ → x=0."]}, {"label": "c", "ans": ["-5"], "steps": ["Tukar ke asas 2: 2² × 2³⁽ˣ⁺¹⁾ = 2²ˣ.", "2+3x+3 = 2x → 3x+5=2x → x=–5."]}], "open": false, "sample": null}, {"num": 2, "stem": "Hitung nilai-nilai x yang mungkin bagi persamaan 3^(x²) × 3^(2x) = 3¹⁵.", "parts": [{"label": null, "ans": ["3,-5"], "steps": ["x² + 2x = 15 → x² + 2x – 15 = 0.", "(x–3)(x+5) = 0 → x=3 atau x=–5."]}], "open": false, "sample": null}, {"num": 3, "stem": "Selesaikan persamaan serentak: 25ᵐ × 5ⁿ = 5⁸ dan 2ᵐ × (1/2)ⁿ = 2.", "parts": [{"label": "m", "ans": ["3"], "steps": ["25ᵐ=5²ᵐ, jadi 5²ᵐ⁺ⁿ=5⁸ → 2m+n=8.", "2ᵐ×(1/2)ⁿ=2¹ → m–n=1 → m=n+1.", "Gantikan: 2(n+1)+n=8 → 3n=6 → n=2, m=3."]}, {"label": "n", "ans": ["2"], "steps": ["Gantikan m=3: n=8-2(3)=2."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri — Ulang Kaji Bab 1 (Indeks)", "exercises": [{"group": "Mahir Diri Bab 1 (Bahagian A)", "title": "Mahir Diri — Tatatanda Indeks", "questions": [{"num": 1, "stem": "Lengkapkan: sebutan algebra 2a⁵b³ mempunyai berapa faktor 'a' dan berapa faktor 'b' apabila dikembangkan?", "parts": [], "open": true, "sample": "2a⁵b³ = 2 × a × a × a × a × a × b × b × b — terdapat 5 faktor 'a' dan 3 faktor 'b'."}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

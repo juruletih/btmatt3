@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (10 soalan) ⚠️ Sebahagian Perlu Buku Teks</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 10 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-8", "chapterTitle": "Lokus dalam Dua Dimensi", "subtopics": [{"code": "8.1", "title": "8.1 Lokus", "notes": [{"heading": "Apakah Lokus?", "html": "<b>Lokus</b> ialah surihan/lintasan satu set titik dalam satu satah/ruang yang memenuhi SYARAT TERTENTU."}], "examples": [{"title": "Contoh 1-3", "q": "Titik pada sayap kipas berputar → lokus? Papan diputar 360° mengelilingi tiang → bentuk 3D?", "steps": ["Sayap kipas berputar pada jarak tetap dari pusat → BULATAN.", "Segi empat tepat diputar 360° → SILINDER. Semi bulatan diputar 360° → SFERA."], "ans": "Bulatan; Silinder; Sfera (bergantung bentuk asal)"}], "exercises": [{"group": "8.1a", "title": "UJI MINDA 8.1a — Mengenal Lokus", "questions": [{"num": 1, "stem": "Terangkan bentuk lokus bagi titik C pada setiap objek berikut.\n(a) Bola berpusat C berguling di satah condong.\n(b) Titik C pada bandul yang berayun.\n(c) Titik C pada yo-yo yang bergerak.\n(d) Titik C pada kasut kanak-kanak di papan gelongsor.", "parts": [{"label": "a", "ans": ["garis lurus selari dengan satah condong"], "steps": []}, {"label": "b", "ans": ["lengkung"], "steps": ["Bandul berayun menghasilkan LENGKUNG (bahagian bulatan)."]}, {"label": "c", "ans": ["garis lurus mencancang"], "steps": []}, {"label": "d", "ans": ["garis lurus selari dengan papan gelongsor"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Nyatakan bentuk lokus bagi satu titik pada:\n(a) sebiji kelapa jatuh dari pokok.\n(b) kereta bergerak di jalan lurus.\n(c) katak yang melompat.", "parts": [{"label": "a", "ans": ["garis lurus mencancang"], "steps": []}, {"label": "b", "ans": ["garis lurus mengufuk"], "steps": []}, {"label": "c", "ans": ["lengkung"], "steps": []}], "open": false, "sample": null}]}, {"group": "8.1b", "title": "UJI MINDA 8.1b — Bentuk 3D daripada Putaran (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Papan/bentuk 2D diputar 360° mengelilingi paksi tegak. Kenal pasti bentuk 3D terhasil.\n(a) Segi tiga bersudut tegak\n(b) Segi empat tepat\n(c) Semi bulatan\n(d) Trapezium", "parts": [{"label": "a", "ans": ["kon"], "steps": []}, {"label": "b", "ans": ["silinder"], "steps": []}, {"label": "c", "ans": ["sfera"], "steps": []}, {"label": "d", "ans": ["frustum"], "steps": []}], "open": false, "sample": null}]}]}, {"code": "8.2", "title": "8.2 Lokus dalam Dua Dimensi", "notes": [{"heading": "⚠️ Sebahagian Soalan Perlukan Rajah", "html": "Sebahagian latihan (terutama yang melibatkan rajah gabungan bentuk atau pelan kawasan) perlu rajah asal buku teks (m.s. 199-221) untuk label titik yang tepat."}, {"heading": "5 Teorem Lokus Asas", "html": "<b>1.</b> Lokus titik berjarak TETAP dari SATU titik tetap = <b>BULATAN</b>.<br><b>2.</b> Lokus titik SAMA JARAK dari DUA titik tetap = <b>PEMBAHAGI DUA SAMA SERENJANG</b> bagi garis yang menyambung dua titik itu.<br><b>3.</b> Lokus titik berjarak TETAP dari SATU garis lurus = <b>SEPASANG GARIS LURUS SELARI</b> dgn garis itu.<br><b>4.</b> Lokus titik SAMA JARAK dari DUA garis SELARI = <b>SATU GARIS LURUS SELARI</b> melalui titik tengah.<br><b>5.</b> Lokus titik SAMA JARAK dari DUA garis BERSILANG = <b>PEMBAHAGI DUA SAMA SUDUT</b> (angle bisector)."}, {"heading": "Persilangan Dua Lokus", "html": "Untuk cari titik yang memenuhi DUA syarat serentak, lukis KEDUA-DUA lokus pada rajah yang SAMA — titik persilangan ialah jawapannya."}], "examples": [{"title": "Contoh 4", "q": "Bina lokus titik P berjarak tetap 3cm dari titik O.", "steps": ["Lukis bulatan berpusat O, jejari 3cm."], "ans": "Bulatan pusat O, jejari 3cm"}, {"title": "Contoh 5-6", "q": "Bina lokus titik X sama jarak dari M dan N (atau dari P dan R dalam segi tiga sama sisi).", "steps": ["Lukis pembahagi dua sama serenjang bagi garis MN (atau PR)."], "ans": "Pembahagi dua sama serenjang MN"}, {"title": "Contoh 7-8", "q": "Lukis lokus X berjarak 3 unit dari garis AB.", "steps": ["Lukis sepasang garis selari dgn AB, masing-masing 3 unit dari AB (satu di setiap sisi)."], "ans": "Sepasang garis selari AB, jarak 3 unit"}, {"title": "Contoh 9-10", "q": "Bina lokus X sama jarak dari dua garis PQ dan PN yang bersilang di P (atau sudut BAD).", "steps": ["Lukis pembahagi dua sama sudut ∠QPN (atau ∠BAD)."], "ans": "Pembahagi dua sama sudut"}, {"title": "Contoh 13", "q": "Klinik berjarak sama dari rumah P,Q, DAN 600m dari jalan AB. Cari kedudukan mungkin.", "steps": ["Lukis pembahagi dua sama serenjang PQ.", "Lukis sepasang garis selari AB, 600m dari AB.", "Titik persilangan kedua-dua lokus = kedudukan klinik yang mungkin (2 kedudukan)."], "ans": "2 kedudukan mungkin (titik persilangan lokus)"}], "exercises": [{"group": "8.2a", "title": "UJI MINDA 8.2a — Memerihalkan Lokus Asas", "questions": [{"num": 1, "stem": "Garis lurus PQ = 5cm.\n(a) X sentiasa berjarak 3cm dari P. Huraikan lokus X.\n(b) Y sentiasa berjarak 4cm dari Q. Huraikan lokus Y.", "parts": [{"label": "a", "ans": ["bulatan berpusat p jejari 3cm"], "steps": ["Lokus X ialah SATU BULATAN berpusat di P dan berjejari 3 cm."]}, {"label": "b", "ans": ["bulatan berpusat q jejari 4cm"], "steps": ["Lokus Y ialah SATU BULATAN berpusat di Q dan berjejari 4 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "Segi empat sama ABCD (grid 1 unit), titik tengah E,F,G,H setiap sisi. Nyatakan lokus (guna label dalam rajah buku teks m.s. 213) bagi titik yang:\n(a) sama jarak dari A dan D.\n(b) sama jarak dari B dan D.\n(c) sentiasa 4 unit dari garis BC.\n(d) sama jarak dari garis AB dan BC.", "parts": [{"label": "a", "ans": ["hf"], "steps": ["Garisan HF, pembahagi dua sama serenjang AD."]}, {"label": "b", "ans": ["ac"], "steps": ["Garisan AC, pembahagi dua sama serenjang BD."]}, {"label": "c", "ans": ["eg"], "steps": ["Garisan EG, selari BC pada jarak 4 unit."]}, {"label": "d", "ans": ["bd"], "steps": ["Garisan BD, pembahagi dua sama sudut ABC."]}], "open": false, "sample": null}, {"num": 3, "stem": "Garis lurus CD=6cm. T sentiasa berjarak 1.5cm dari CD.\n(a) Lukiskan lokus T (amali).\n(b) Huraikan lokus T selengkapnya.", "parts": [{"label": "b", "ans": ["sepasang garis lurus selari dgn cd, jarak 1.5cm"], "steps": ["Lokus T ialah SEPASANG GARIS LURUS yang SELARI dengan CD, masing-masing berjarak 1.5 cm dari CD (satu di setiap sisi)."]}], "open": false, "sample": null}]}, {"group": "8.2b", "title": "UJI MINDA 8.2b — Lokus dalam Sistem Koordinat", "questions": [{"num": 1, "stem": "Titik E(2,4), F(6,6), G(2,2), H(4,0) pada satah Cartes. Faruk berada SAMA JARAK dari paksi-x dan paksi-y, DAN kurang drpd 5 unit dari asalan O. Titik mana kedudukan Faruk?", "parts": [{"label": null, "ans": ["g"], "steps": ["Sama jarak dari paksi-x dan paksi-y bermaksud koordinat x=y (atau x=-y) — hanya G(2,2) memenuhi x=y.", "Jarak G dari O = √(2²+2²) = √8 ≈ 2.83 unit < 5 unit — MEMENUHI syarat kedua.", "Kedudukan Faruk ialah titik G."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 8", "exercises": [{"group": "Mahir Diri Bab 8", "title": "Mahir Diri — Lokus dalam Dua Dimensi", "questions": [{"num": 1, "stem": "Segi tiga sama sisi ABC, S titik atas AB. Lukis (a) lokus X: AX=AS (b) lokus Y: sama jarak dari AC,BC. Nyatakan bentuk kedua-dua lokus.", "parts": [{"label": "a", "ans": ["lengkok/busur berpusat a jejari as"], "steps": ["Lokus X (AX=AS, jarak tetap dari A) ialah LENGKOK bulatan berpusat A, jejari AS."]}, {"label": "b", "ans": ["pembahagi dua sama sudut c"], "steps": ["Lokus Y (sama jarak dari AC dan BC) ialah PEMBAHAGI DUA SAMA sudut C (∠ACB)."]}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 8", "title": "Masteri Kendiri — Lokus dalam Dua Dimensi", "questions": [{"num": 1, "stem": "Rajah gabungan bentuk (rujuk buku teks m.s. 219-220). Kenal pasti lokus X dan Y bagi 3 situasi berbeza berdasarkan huruf rantau (N,L,I,II,VI dsb).", "parts": [], "open": true, "sample": "Latihan ini memerlukan rajah rantau berlabel daripada buku teks — tandakan lokus mengikut syarat jarak yang diberi, kemudian kenal pasti persilangan menggunakan label rantau dalam rajah."}, {"num": 2, "stem": "Nyatakan lokus X dan lokus Y bagi dua situasi berlainan (rujuk rajah buku teks).\n(a) lokus X: sentiasa bergerak 1cm dari O; lokus Y: sama jarak dari P dan R.\n(b) lokus X: sentiasa bergerak 1cm dari O; lokus Y: sama jarak dari Q dan S.", "parts": [], "open": true, "sample": "(a) Lokus X ialah bulatan jejari 1cm berpusat O; Lokus Y ialah pembahagi dua sama serenjang PR. (b) Lokus X sama seperti (a); Lokus Y ialah pembahagi dua sama serenjang QS."}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

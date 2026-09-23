@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (43 soalan) ⚠️ Perlu Buku Teks</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 43 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-6", "chapterTitle": "Sudut dan Tangen bagi Bulatan", "subtopics": [{"code": "6.1", "title": "6.1 Sudut pada Lilitan dan Sudut Pusat yang Dicangkum oleh Suatu Lengkok", "notes": [{"heading": "⚠️ Bab Ini SANGAT Bergantung Rajah Bulatan", "html": "<b>Hampir SEMUA soalan bab ini memerlukan rajah bulatan sebenar</b> daripada buku teks (m.s. 126-165) untuk dilihat kedudukan titik, sudut dan label yang diberi. Sila SEDIAKAN buku teks di sisi sepanjang bab ini — jawapan rasmi disediakan untuk semakan kendiri sahaja."}, {"heading": "Sudut Lilitan yang Dicangkum Lengkok Sama", "html": "Sudut-sudut pada LILITAN bulatan yang dicangkum oleh LENGKOK YANG SAMA adalah SAMA BESAR."}, {"heading": "Sudut Pusat = 2 × Sudut Lilitan", "html": "Sudut PUSAT yang dicangkum oleh sesuatu lengkok ialah DUA KALI sudut LILITAN yang dicangkum oleh lengkok yang sama."}, {"heading": "Sudut dalam Semibulatan", "html": "Sudut lilitan yang dicangkum oleh DIAMETER (semibulatan) = 90°."}, {"heading": "Sisi Empat Kitaran", "html": "Hasil tambah sudut-sudut BERTENTANGAN dalam sisi empat kitaran = 180°."}], "examples": [{"title": "Contoh 2-3", "q": "Bulatan pusat O. Sudut pusat ∠POR=x, sudut lilitan ∠PQR=y (lengkok sama PR). Nyatakan hubungan x dan y.", "steps": ["Sudut pusat = 2 × sudut lilitan (lengkok sama)."], "ans": "x = 2y"}, {"title": "Contoh 6", "q": "PQR ialah diameter bulatan. Nyatakan ∠PQR.", "steps": ["Sudut lilitan dicangkum diameter = 90°."], "ans": "∠PQR = 90°"}, {"title": "Contoh 7-8", "q": "PQRS sisi empat kitaran, ∠P=110°. Cari ∠R.", "steps": ["∠P+∠R=180° (bertentangan)."], "ans": "∠R = 70°"}], "exercises": [{"group": "6.1a", "title": "UJI MINDA 6.1a — Sudut Pusat & Sudut Lilitan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari sudut lilitan (rajah bulatan buku teks m.s. 129-130).", "parts": [{"label": "a", "ans": ["35"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["25"], "steps": []}, {"label": "c", "ans": ["30"], "steps": []}, {"label": "d", "ans": ["35"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari sudut pusat dicangkum lengkok sama (rajah buku teks).", "parts": [{"label": "a", "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["35"], "steps": []}, {"label": "c", "ans": ["70"], "steps": []}, {"label": "d", "ans": ["105"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Cari sudut yang dicangkum lengkok sama panjang (rajah buku teks).", "parts": [{"label": "a", "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["30"], "steps": []}, {"label": "c", "ans": ["10"], "steps": []}, {"label": "d", "ans": ["80"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.1b", "title": "UJI MINDA 6.1b — Sudut Pusat = 2× Sudut Lilitan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari nilai x,y (sudut pusat & lilitan, panjang perentas — rajah buku teks m.s. 132).", "parts": [{"label": "a", "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["30"], "steps": []}, {"label": "c", "ans": ["3.6"], "steps": []}, {"label": "d", "ans": ["10.4"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari sudut lilitan/pusat (rajah buku teks).", "parts": [{"label": "a", "ans": ["70"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["30"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.1c", "title": "UJI MINDA 6.1c — Sudut dalam Semibulatan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Sudut lilitan dicangkum diameter = 90°. Cari nilai sudut (rajah buku teks m.s. 134).", "parts": [{"label": "a", "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["80"], "steps": []}, {"label": "c", "ans": ["50"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut menggunakan sifat 90° dalam semibulatan.", "parts": [{"label": "a", "ans": ["50"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["65"], "steps": []}, {"label": "c", "ans": ["50"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.1d", "title": "UJI MINDA 6.1d — Menyelesaikan Masalah Sudut Bulatan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Bulatan berpusat O (rajah buku teks m.s. 135). Cari (a) sudut (b)-(d) panjang/sudut berkaitan.", "parts": [{"label": "a", "ans": ["45"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["5"], "steps": []}, {"label": "c", "ans": ["10"], "steps": []}, {"label": "d", "ans": ["55"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.1e", "title": "UJI MINDA 6.1e — Sisi Empat Kitaran (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Sisi empat kitaran: hasil tambah sudut bertentangan = 180°. Cari nilai sudut (rajah buku teks m.s. 138).", "parts": [{"label": "a", "ans": ["55"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["25"], "steps": []}, {"label": "c", "ans": ["27.5"], "steps": []}, {"label": "d", "ans": ["30"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Sisi empat kitaran PQRS, satu sudut diberi. Cari sudut peluaran/pedalaman berkaitan (jumlah=360°).", "parts": [{"label": null, "ans": ["216"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}, {"group": "6.1f", "title": "UJI MINDA 6.1f — Menyelesaikan Masalah Sisi Empat Kitaran (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari nilai sudut/panjang sisi (rajah buku teks m.s. 139).", "parts": [{"label": "a", "ans": ["110"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["10.3"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut sisi empat kitaran.", "parts": [{"label": null, "ans": ["176"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}]}, {"code": "6.2", "title": "6.2 Tangen kepada Bulatan", "notes": [{"heading": "Tangen dan Jejari", "html": "<b>Tangen</b> menyentuh bulatan pada SATU titik sahaja (titik ketangenan). Jejari yang bersilang dgn tangen pada titik ketangenan membentuk sudut 90° (BERSERENJANG)."}], "examples": [{"title": "Contoh 9", "q": "OP jejari, PQ tangen pada titik P. Nyatakan ∠OPQ.", "steps": ["Jejari berserenjang dgn tangen pada titik ketangenan."], "ans": "∠OPQ = 90°"}], "exercises": [{"group": "6.2a", "title": "UJI MINDA 6.2a — Mengenal Tangen kepada Bulatan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Kenal pasti tangen, perentas, dan titik ketangenan (rajah buku teks m.s. 143).", "parts": [], "open": true, "sample": "Tangen menyentuh bulatan pada HANYA SATU titik; perentas/garis lurus lain melalui DUA titik pada lilitan bulatan. Rujuk rajah asal buku teks untuk kenal pasti label tepat."}]}, {"group": "6.2b", "title": "UJI MINDA 6.2b — Sudut Tangen dengan Jejari (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Jejari berserenjang dgn tangen pada titik ketangenan (=90°). Cari nilai sudut (rajah buku teks m.s. 145).", "parts": [{"label": "a", "ans": ["30"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["20"], "steps": []}, {"label": "c", "ans": ["120"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut menggunakan sifat tangen-jejari 90°.", "parts": [{"label": null, "ans": ["50"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai sudut menggunakan sifat tangen-jejari 90°.", "parts": [{"label": null, "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}, {"group": "6.2d", "title": "UJI MINDA 6.2d — Menyelesaikan Masalah Tangen-Jejari (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari nilai sudut (rajah buku teks m.s. 148).", "parts": [{"label": null, "ans": ["97"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["38"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["79"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 4, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["99"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 5, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["108"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}]}, {"code": "6.3", "title": "6.3 Dua Tangen yang Bersilang dan Sudut Segmen Bertentangan", "notes": [{"heading": "Dua Tangen daripada Satu Titik Luaran", "html": "Jika dua tangen dari titik A bersilang bulatan pada B dan C: <b>AB = AC</b> (panjang tangen sama), <b>∠BOA = ∠COA</b>, <b>∠OAB = ∠OAC</b> (simetri)."}, {"heading": "Teorem Sudut Tangen-Perentas (Segmen Bertentangan)", "html": "Sudut antara TANGEN dengan PERENTAS pada titik ketangenan = sudut dalam SEGMEN BERTENTANGAN yang dicangkum oleh perentas yang sama."}], "examples": [{"title": "Contoh 14", "q": "AB, BC tangen dari titik B (pusat O). Nyatakan hubungan AB, BC dan ∠ABO, ∠CBO.", "steps": ["Dua tangen dari satu titik: panjang sama, sudut simetri."], "ans": "AB=BC; ∠ABO=∠CBO"}, {"title": "Contoh 19-20", "q": "Sudut tangen-perentas = sudut dalam segmen bertentangan. Jika sudut tangen-perentas=50°, cari sudut segmen bertentangan.", "steps": ["Kedua-dua sudut ini SAMA mengikut teorem."], "ans": "50°"}], "exercises": [{"group": "6.3a", "title": "UJI MINDA 6.3a — Tangen vs Perentas (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Kenal pasti garisan yang merupakan tangen dan yang merupakan perentas (rajah buku teks m.s. 150).", "parts": [], "open": true, "sample": "Tangen menyentuh bulatan pada SATU titik sahaja; perentas melalui DUA titik pada lilitan bulatan. Rujuk rajah asal untuk label tepat."}]}, {"group": "6.3b", "title": "UJI MINDA 6.3b — Dua Tangen dari Satu Titik (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Dua tangen dari titik luaran: panjang sama, sudut simetri. Cari nilai sudut (rajah buku teks m.s. 152).", "parts": [{"label": null, "ans": ["34"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut (a)(b)(c) menggunakan sifat dua tangen.", "parts": [{"label": "a", "ans": ["120"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["60"], "steps": []}, {"label": "c", "ans": ["30"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.3c", "title": "UJI MINDA 6.3c — Menyelesaikan Masalah Dua Tangen (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari nilai sudut/panjang (rajah buku teks m.s. 153).", "parts": [{"label": "a", "ans": ["60"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["30"], "steps": []}, {"label": "c", "ans": ["8.66"], "steps": []}, {"label": "d", "ans": ["10"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut/panjang.", "parts": [{"label": "a", "ans": ["40"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["3.575"], "steps": []}, {"label": "c", "ans": ["7.667"], "steps": []}], "open": false, "sample": null}]}, {"group": "6.3d", "title": "UJI MINDA 6.3d — Teorem Sudut Tangen-Perentas / Segmen Bertentangan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Sudut tangen-perentas = sudut dalam segmen bertentangan. Kenal pasti hubungan sudut sama (rajah buku teks m.s. 154).", "parts": [], "open": true, "sample": "∠y=∠z, ∠x=∠b, ∠x=∠a, ∠y=∠a, ∠f=∠e, ∠z=∠a (mengikut label rajah asal buku teks — sudut tangen-perentas SAMA dengan sudut dalam segmen bertentangan yang dicangkum oleh perentas yang sama)."}, {"num": 2, "stem": "Cari nilai sudut menggunakan teorem sudut segmen bertentangan.", "parts": [{"label": null, "ans": ["27"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["52"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 4, "stem": "Cari nilai sudut.", "parts": [{"label": null, "ans": ["44"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}, {"group": "6.3e", "title": "UJI MINDA 6.3e — Menyelesaikan Masalah Gabungan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Cari nilai sudut (rajah buku teks m.s. 156).", "parts": [{"label": null, "ans": ["50"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari x,y (darjah & minit).", "parts": [{"label": "x", "ans": ["26°34'"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "y", "ans": ["31°43'"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Cari sudut dan panjang berkaitan.", "parts": [{"label": "a", "ans": ["130"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "bi", "ans": ["12.87"], "steps": []}, {"label": "bii", "ans": ["8.578"], "steps": []}, {"label": "biii", "ans": ["23.66"], "steps": []}], "open": false, "sample": null}]}]}, {"code": "6.4", "title": "6.4 Menyelesaikan Masalah Melibatkan Tangen Sepunya Dua Bulatan", "notes": [{"heading": "Tangen Sepunya Dua Bulatan", "html": "Apabila dua bulatan berlainan jejari mempunyai TANGEN SEPUNYA, gunakan teorem Pythagoras (beza jejari sebagai satu kaki) untuk cari panjang tangen antara dua titik ketangenan."}], "examples": [{"title": "Contoh 21", "q": "Dua bulatan pusat C,D jejari 6cm,3cm, tangen sepunya PQRS. Hitung QR.", "steps": ["Lukis garis dari D berserenjang ke CQ, membentuk segi tiga bersudut tegak dgn kaki (6-3)=3cm dan hipotenus=CD.", "Guna Pythagoras: QR²=CD²-(6-3)²."], "ans": "Bergantung jarak CD yang diberi dalam rajah"}], "exercises": [{"group": "6.4a", "title": "UJI MINDA 6.4a — Tangen Sepunya Dua Bulatan (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Dua bulatan pusat C,D, jejari 6cm,3cm. PQRS tangen sepunya. Hitung (a) QR (3ab) (b) luas CDRQ (4ab).", "parts": [{"label": "a", "ans": ["8.49"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["38.21"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Dua bulatan pusat A,B, jejari 4cm,8cm, ∠PAQ=70°. Hitung (a) x (b) y (c) QR (4ab).", "parts": [{"label": "a", "ans": ["35"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["55"], "steps": []}, {"label": "c", "ans": ["11.31"], "steps": []}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 6", "exercises": [{"group": "Mahir Diri Bab 6", "title": "Mahir Diri — Sudut dan Tangen bagi Bulatan", "questions": [{"num": 1, "stem": "O pusat bulatan, MN tangen. ∠LKN=52°, ∠MLO=136°. Hitung x.", "parts": [{"label": null, "ans": ["30"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "ABC tangen, BD=BE, ∠CBD=65°. Hitung x.", "parts": [{"label": null, "ans": ["130"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 3, "stem": "ABC,CDE tangen, ∠BCD=48°. Hitung x.", "parts": [{"label": null, "ans": ["114"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 4, "stem": "AD tangen, ∠BSR=15°. Hitung x.", "parts": [{"label": null, "ans": ["60"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 6", "title": "Masteri Kendiri — Sudut dan Tangen bagi Bulatan", "questions": [{"num": 1, "stem": "Dua bulatan, PTQ tangen sepunya. KT=LT, ∠KLT=61°, ∠SNT=42°. Hitung (a) ∠LTQ (b) x.", "parts": [{"label": "a", "ans": ["61"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["80"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Dua bulatan pusat O,P. ABCD tangen sepunya. Hitung luas trapezium OBCP (3ab).", "parts": [{"label": null, "ans": ["64.8"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}], "open": false, "sample": null}, {"num": 3, "stem": "Bulatan pusat O, jejari 3cm, QR=8cm, PQR tangen. Tentukan (a) ∠TRQ (b) ST (cm).", "parts": [{"label": "a", "ans": ["36°52'"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["3.6"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "Bulatan pusat O, PQ tangen, 8cm & 12cm diberi. Hitung (a) jejari (b) OP (c) luas ΔOPQ.", "parts": [{"label": "a", "ans": ["5"], "steps": ["(Nota: soalan ini memerlukan rajah bulatan asal daripada buku teks — sila rujuk buku fizikal untuk lihat kedudukan titik dan sudut yang diberi.)"]}, {"label": "b", "ans": ["13"], "steps": []}, {"label": "c", "ans": ["30"], "steps": []}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

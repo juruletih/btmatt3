@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (20 soalan) ⚠️ Perlu Buku Teks</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 20 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "T3-4", "chapterTitle": "Lukisan Berskala", "subtopics": [{"code": "4.1", "title": "4.1 Lukisan Berskala", "notes": [{"heading": "⚠️ Bab Ini Perlu Buku Teks", "html": "<b>Bab ini sangat bergantung rajah dan lukisan tangan.</b> Sila SEDIAKAN buku teks Matematik Tingkatan 3 (m.s. 86-105) DAN kertas grid di sisi semasa buat latihan — terutamanya semua soalan 'Lukiskan...' yang memerlukan lukisan sebenar tangan, bukan hanya jawapan angka."}, {"heading": "Apakah Lukisan Berskala?", "html": "<b>Lukisan berskala</b> ialah lukisan suatu objek dengan SEMUA ukuran berkadaran dengan ukuran objek sebenar (sudut KEKAL SAMA, panjang sisi berkadaran mengikut skala tetap)."}, {"heading": "Skala", "html": "Skala = Ukuran Lukisan Berskala ÷ Ukuran Objek, ditulis 1:n.<br>• n&lt;1 → lukisan LEBIH BESAR drpd objek.<br>• n&gt;1 → lukisan LEBIH KECIL drpd objek.<br>• n=1 → lukisan SAMA saiz dgn objek."}], "examples": [{"title": "Contoh 2-3", "q": "Objek PQRS, lukisan berskala P'Q'R'S' (grid segi empat sama). Nyatakan skala dalam bentuk 1:n.", "steps": ["Skala = P'Q'/PQ = (nisbah panjang sisi lukisan kepada objek).", "Permudahkan nisbah kepada bentuk 1:n."], "ans": "Skala = 1:n (bergantung nisbah sebenar rajah)"}, {"title": "Contoh 6", "q": "Peta skala 1:300 000. Sungai 3cm pada peta. Jarak sebenar (km)?", "steps": ["Jarak sebenar = 3cm × 300000 = 900000cm = 9km."], "ans": "9 km"}, {"title": "Contoh 8", "q": "Khairul lukis segi empat sama skala 1:1/3. Sisi sebenar 6cm. Panjang sisi lukisan?", "steps": ["Skala 1:1/3 → lukisan 3× lebih besar.", "Sisi lukisan = 6×3 = 18cm."], "ans": "18 cm"}, {"title": "Contoh 14", "q": "Jarak Bintulu-Miri pada peta 4cm, skala 1cm:50km. (a) Jarak sebenar? (b) Jarak pada peta skala 1:2000000? (c) Masa memandu @80km/j?", "steps": ["(a) 4×50=200km.", "(b) Skala 1:2000000=1cm:20km. Jarak pada peta baharu=200÷20=10cm.", "(c) Masa=200÷80=2.5jam=2jam30minit."], "ans": "(a) 200km (b) 10cm (c) 2 jam 30 minit"}], "exercises": [{"group": "4.1a", "title": "UJI MINDA 4.1a — Mengenal Lukisan Berskala (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Objek ABCDE dilukis semula dalam 5 saiz berbeza (Rajah 1-5, buku teks m.s. 89). Rajah mana yang merupakan LUKISAN BERSKALA (sudut kekal sama, sisi berkadaran)?", "parts": [{"label": null, "ans": ["rajah1,rajah2,rajah4"], "steps": ["Lukisan berskala mesti mengekalkan SEMUA SUDUT sama dan sisi berkadaran (skala tetap).", "Rajah 1, Rajah 2 dan Rajah 4 memenuhi syarat ini."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pada kertas grid, lukis semula bentuk yang diberi dengan (a) saiz sama (b) lebih kecil (c) lebih besar.", "parts": [], "open": true, "sample": "Latihan ini memerlukan kertas grid dan bentuk asal daripada buku teks m.s. 89 untuk dilukis semula secara praktikal."}]}, {"group": "4.1b", "title": "UJI MINDA 4.1b — Mentafsir Skala", "questions": [{"num": 1, "stem": "Tentukan skala (bentuk 1:n) bagi setiap lukisan berskala berikut (rajah buku teks m.s. 94).", "parts": [{"label": "a", "ans": ["1:1/2"], "steps": ["Skala = 1 : 1/2 (lukisan lebih besar drpd objek)."]}, {"label": "b", "ans": ["1:3"], "steps": ["Skala = 1 : 3."]}, {"label": "c", "ans": ["1:1/2"], "steps": ["Skala = 1 : 1/2."]}, {"label": "d", "ans": ["1:2/3"], "steps": ["Skala = 1 : 2/3."]}], "open": false, "sample": null}, {"num": 2, "stem": "Poster 24cm panjang, 8cm lebar. Skala lukisan berskala 1:4. Hitung panjang dan lebar lukisan berskala.", "parts": [{"label": "panjang", "ans": ["6"], "steps": ["Panjang = 24 ÷ 4 = 6 cm."]}, {"label": "lebar", "ans": ["2"], "steps": ["Lebar = 8 ÷ 4 = 2 cm."]}], "open": false, "sample": null}, {"num": 3, "stem": "Peta dilukis skala 1:400 000. Sungai 2.5cm pada peta. Jarak sebenar (km)?", "parts": [{"label": null, "ans": ["10"], "steps": ["Jarak sebenar = 2.5 × 400000 cm = 1000000 cm = 10 km."]}], "open": false, "sample": null}, {"num": 4, "stem": "Siew Lin lukis segi tiga bersudut tegak skala 1:1/3. Hipotenus lukisan = 18cm. Hitung hipotenus segi tiga ASAL.", "parts": [{"label": null, "ans": ["6"], "steps": ["Skala 1:1/3 bermaksud lukisan 3× LEBIH BESAR drpd objek.", "Hipotenus asal = 18 ÷ 3 = 6 cm."]}], "open": false, "sample": null}]}, {"group": "4.1c", "title": "UJI MINDA 4.1c — Melukis Lukisan Berskala (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Lukiskan lukisan berskala bagi objek yang diberi dengan skala 1:1/2 dan 1:3.", "parts": [], "open": true, "sample": "Latihan lukisan praktikal — rujuk bentuk asal dalam buku teks m.s. 97-98 dan gunakan kertas grid."}, {"num": 2, "stem": "Objek pada grid 1cm×1cm dilukis semula pada grid (i) 2cm×2cm (ii) 0.5cm×0.5cm. Hitung skala digunakan bagi (i) dan (ii).", "parts": [{"label": "i", "ans": ["1:1/2"], "steps": ["Grid lukisan 2cm ÷ grid objek 1cm = 2:1 = 1:1/2."]}, {"label": "ii", "ans": ["1:2"], "steps": ["Grid lukisan 0.5cm ÷ grid objek 1cm = 0.5:1 = 1:2."]}], "open": false, "sample": null}, {"num": 3, "stem": "Lukiskan lukisan berskala bagi bentuk yang diberi (segi tiga 3cm×9cm, skala 1:3; segi empat 4m×8m→10m, skala 1:200; segi empat 2cm×4cm, skala 1:1/2).", "parts": [], "open": true, "sample": "Latihan lukisan praktikal — rujuk ukuran asal dalam buku teks m.s. 98."}, {"num": 4, "stem": "Lukiskan objek SEBENAR bagi gabungan bentuk yang diberi (skala 1:1/2).", "parts": [], "open": true, "sample": "Latihan lukisan praktikal — rujuk rajah asal dalam buku teks m.s. 98."}]}, {"group": "4.1d", "title": "UJI MINDA 4.1d — Menyelesaikan Masalah Lukisan Berskala", "questions": [{"num": 1, "stem": "Segi tiga bersudut tegak 18cm×24cm (kaki). Lukisan berskala skala 1:1/3. Hitung luas lukisan berskala (cm²).", "parts": [{"label": null, "ans": ["1944"], "steps": ["Skala 1:1/3 → lukisan 3× LEBIH BESAR.", "Kaki lukisan = 18×3=54cm, 24×3=72cm.", "Luas = 1/2×54×72 = 1944 cm²."]}], "open": false, "sample": null}, {"num": 2, "stem": "Bilik segi empat tepat 3.5m×5.2m. Skala lukisan 1:50. Hitung perimeter lukisan berskala (cm).", "parts": [{"label": null, "ans": ["34.8"], "steps": ["Tukar ke cm: 350cm×520cm.", "Lukisan: 350÷50=7cm, 520÷50=10.4cm.", "Perimeter = 2(7+10.4) = 34.8 cm."]}], "open": false, "sample": null}, {"num": 3, "stem": "Bilik pada lukisan 7cm×5cm, skala 1:400. Hitung luas SEBENAR bilik (m²).", "parts": [{"label": null, "ans": ["560"], "steps": ["Dimensi sebenar = 7×400=2800cm=28m; 5×400=2000cm=20m.", "Luas = 28×20 = 560 m²."]}], "open": false, "sample": null}, {"num": 4, "stem": "Poligon sekata sudut peluaran 36°, dilukis semula skala 1:5. Panjang sisi SEBENAR 10cm. Hitung perimeter LUKISAN BERSKALA.", "parts": [{"label": null, "ans": ["20"], "steps": ["Bilangan sisi = 360°÷36° = 10 sisi (dekagon sekata).", "Sisi lukisan = 10cm÷5 = 2cm.", "Perimeter lukisan = 10×2 = 20 cm."]}], "open": false, "sample": null}, {"num": 5, "stem": "Padang segi empat tepat, lukisan 6cm×3cm, skala 1:2000.\n(a) Hitung luas SEBENAR padang (m²).\n(b) Encik Dany potong rumput 400m² dalam 8 minit. Hitung tempoh untuk keseluruhan padang (jam & minit).", "parts": [{"label": "a", "ans": ["7200"], "steps": ["Dimensi sebenar = 6×2000=12000cm=120m; 3×2000=6000cm=60m.", "Luas = 120×60 = 7 200 m²."]}, {"label": "b", "ans": ["2 jam 24 minit"], "steps": ["Masa = (7200÷400)×8 = 18×8 = 144 minit = 2 jam 24 minit."]}], "open": false, "sample": null}]}]}], "review": {"title": "Mahir Diri & Masteri Kendiri — Ulang Kaji Bab 4", "exercises": [{"group": "Mahir Diri Bab 4", "title": "Mahir Diri — Lukisan Berskala", "questions": [{"num": 1, "stem": "Jarak Kuching-Kota Kinabalu pada peta = 5.4cm, skala 1cm:150km. Pesawat berlepas 1240, tiba 1410. Hitung laju purata (km/j).", "parts": [{"label": null, "ans": ["540"], "steps": ["Jarak sebenar = 5.4×150 = 810 km.", "Masa = 1410–1240 = 1 jam 30 minit = 1.5 jam.", "Laju = 810÷1.5 = 540 km/j."]}], "open": false, "sample": null}, {"num": 2, "stem": "Ruang tamu Puan Farah (lukisan berskala 1:50, rujuk rajah m.s. 102). Jubin 30cm×30cm @RM2.80 vs 50cm×50cm @RM6. Jubin mana lebih jimat?", "parts": [{"label": null, "ans": ["jubin 50cm x 50cm"], "steps": ["Kira keluasan sebenar ruang tamu daripada lukisan berskala (rujuk rajah buku teks).", "Bandingkan jumlah kos: (bilangan jubin 30×30 × RM2.80) berbanding (bilangan jubin 50×50 × RM6).", "Jubin 50cm×50cm LEBIH JIMAT (jimat RM633.20 mengikut skema jawapan buku teks)."]}], "open": false, "sample": null}, {"num": 3, "stem": "Kebun Pak Hassan (lukisan berskala 1:2000, rujuk rajah m.s. 102, bentuk L dgn kolam ikan, pokok durian/pisang, kawasan lapang).\n(a) Luas sebenar kolam ikan (m², π=22/7).\n(b) Nisbah luas durian:pisang.\n(c) Luas kawasan lapang (m²).\n(d) Pagar RM5.50/m, jumlah kos pagar.", "parts": [{"label": "a", "ans": ["2829"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 102 untuk bentuk & ukuran kolam ikan.)"]}, {"label": "b", "ans": ["4:13"], "steps": []}, {"label": "c", "ans": ["1971"], "steps": []}, {"label": "d", "ans": ["3960"], "steps": []}], "open": false, "sample": null}]}, {"group": "Masteri Kendiri Bab 4", "title": "Masteri Kendiri — Lukisan Berskala", "questions": [{"num": 1, "stem": "Tapak rumah kedai (lukisan berskala 1:400): Stor 1.5cm×2cm, keseluruhan 6cm×4cm.\n(a) Luas sebenar bilik stor (m²).\n(b) Nisbah luas rumah kedai:bilik stor.\n(c) Jika tinggi sebenar 3.75m, hitung isi padu (m³).", "parts": [{"label": "a", "ans": ["48"], "steps": ["Dimensi sebenar stor = 1.5×400=600cm=6m; 2×400=800cm=8m.", "Luas = 6×8 = 48 m²."]}, {"label": "b", "ans": ["8:1"], "steps": ["Luas lukisan rumah kedai = 6×4=24cm². Luas lukisan stor=1.5×2=3cm².", "Nisbah = 24:3 = 8:1."]}, {"label": "c", "ans": ["1440"], "steps": ["Dimensi sebenar rumah kedai = 6×400=2400cm=24m; 4×400=1600cm=16m.", "Luas tapak = 24×16=384m².", "Isi padu = 384×3.75 = 1 440 m³."]}], "open": false, "sample": null}, {"num": 2, "stem": "Padang bola sepak (lukisan berskala 12cm×7cm, skala 1:1000).\n(a) Luas sebenar (m²).\n(b) Skala MAKSIMUM untuk lukis semula pada kertas A4 (~29.7cm×21cm)?\n(c) Khemah 5m×4m didirikan (rujuk Rajah 2 tapak kanopi buku teks). (i) Bilangan MAKSIMUM khemah. (ii) Sewa RM100/hari, diskaun 25% untuk ≥5 hari. Jumlah sewa seminggu?", "parts": [{"label": "a", "ans": ["8400"], "steps": ["Dimensi sebenar = 12×1000=12000cm=120m; 7×1000=7000cm=70m.", "Luas = 120×70 = 8 400 m²."]}, {"label": "b", "ans": ["1:500"], "steps": ["Pada skala 1:500: lukisan = 120m÷500=24cm dan 70m÷500=14cm — kedua-duanya muat pada kertas A4 (~29.7cm×21cm)."]}, {"label": "i", "ans": ["60"], "steps": ["(Nota: rujuk rajah tapak kanopi buku teks m.s. 103 untuk kawasan tersedia bagi khemah.)"]}, {"label": "ii", "ans": ["31500"], "steps": ["Sewa 7 hari dgn diskaun 25% (kerana ≥5 hari) = 100×7×0.75 = RM525 sekhemah.", "Jumlah 60 khemah = 525×60 = RM31 500."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>
